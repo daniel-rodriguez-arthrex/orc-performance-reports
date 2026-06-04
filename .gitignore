@@ -1,0 +1,42 @@
+# Secrets — never commit
+.env
+
+# Python
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Test results (can be large — store externally)
+results/
+
+# Log files
+*.log
+
+# Playwright
+.playwright-mcp/
+test-results/
+playwright-report/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Binary assets (report logo — tracked intentionally; remove this line if you want to exclude it)
+# ArthrexLogo.png
+
+# Debug artifacts (scratch files, not part of the suite)
+_debug_*.js
+metrics/_debug_*.py
+metrics/_test_*.py
+metrics/_gql_introspect.py
+tools/_gen_*.py

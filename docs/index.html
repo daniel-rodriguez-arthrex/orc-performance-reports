@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ORC Performance Reports — Arthrex</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <style>
+    :root {
+      --art-blue: #0077C8;
+      --art-dark: #003865;
+      --art-navy: #1a2332;
+    }
+    body { font-family: 'Inter', sans-serif; background: #f4f6fb; color: #1a2332; margin: 0; }
+
+    /* ── Hero / Nav ── */
+    .hero {
+      background: linear-gradient(135deg, var(--art-navy) 0%, #2d3561 100%);
+      padding: 2rem 2rem 1.75rem;
+      box-shadow: 0 4px 18px rgba(0,0,0,.4);
+    }
+    .hero-title   { color: #fff; font-size: 1.6rem; font-weight: 700; letter-spacing: -.01em; margin: 0; }
+    .hero-sub     { color: rgba(255,255,255,.55); font-size: .88rem; margin-top: .3rem; }
+    .internal-badge {
+      display: inline-block; background: rgba(255,255,255,.12); color: rgba(255,255,255,.7);
+      border: 1px solid rgba(255,255,255,.2); border-radius: 20px;
+      padding: 2px 12px; font-size: .72rem; font-weight: 600; letter-spacing: .07em;
+      text-transform: uppercase; margin-top: .6rem;
+    }
+
+    /* ── Tool spotlight card ── */
+    .tool-card {
+      background: linear-gradient(135deg, #0077C8 0%, #003865 100%);
+      border-radius: 14px;
+      padding: 1.5rem 1.75rem;
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(0,119,200,.35);
+      display: flex; align-items: center; gap: 1.25rem;
+      text-decoration: none;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .tool-card:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,119,200,.45); }
+    .tool-icon   { font-size: 2.8rem; flex-shrink: 0; }
+    .tool-title  { font-size: 1.25rem; font-weight: 700; margin: 0; }
+    .tool-desc   { font-size: .85rem; opacity: .8; margin-top: .25rem; }
+    .tool-arrow  { margin-left: auto; font-size: 1.5rem; opacity: .7; flex-shrink: 0; }
+
+    /* ── Section heading ── */
+    .section-label {
+      font-size: .72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .1em; color: #8a93a2; margin-bottom: .75rem;
+    }
+
+    /* ── Report cards ── */
+    .report-card {
+      background: #fff; border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.07);
+      overflow: hidden;
+      transition: box-shadow .15s, transform .15s;
+      text-decoration: none; color: inherit; display: block;
+    }
+    .report-card:hover { box-shadow: 0 6px 22px rgba(0,0,0,.13); transform: translateY(-2px); }
+    .report-card-header {
+      background: linear-gradient(135deg, var(--art-navy) 0%, #263150 100%);
+      padding: .85rem 1.1rem;
+      display: flex; align-items: center; gap: .75rem;
+    }
+    .report-card-title { color: #fff; font-size: .95rem; font-weight: 600; flex: 1; }
+    .report-card-body  { padding: 1rem 1.1rem; }
+
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: .5rem; margin-bottom: .85rem;
+    }
+    .stat-item { background: #f4f6fb; border-radius: 7px; padding: .45rem .65rem; }
+    .stat-label { font-size: .68rem; text-transform: uppercase; letter-spacing: .06em; color: #8a93a2; font-weight: 600; }
+    .stat-value { font-size: .95rem; font-weight: 700; color: var(--art-navy); margin-top: 1px; }
+
+    .report-link-btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: var(--art-blue); color: #fff; border-radius: 7px;
+      padding: .45rem 1rem; font-size: .82rem; font-weight: 600;
+      text-decoration: none; transition: background .15s;
+    }
+    .report-link-btn:hover { background: var(--art-dark); color: #fff; }
+
+    /* Verdict badges */
+    .badge-pass   { background: #d1fae5; color: #065f46; }
+    .badge-caution{ background: #fef3c7; color: #92400e; }
+    .badge-warn   { background: #fee2e2; color: #991b1b; }
+    .verdict-pill {
+      padding: 2px 10px; border-radius: 12px;
+      font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center; padding: 2rem; font-size: .75rem; color: #aab0c0;
+      border-top: 1px solid #e5e7eb; margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="container-lg" style="max-width:960px;">
+    <h1 class="hero-title">ORC Performance Reports</h1>
+    <div class="hero-sub">Endurance &amp; capacity test results for ORC server validation</div>
+    <div class="internal-badge">Internal Use Only</div>
+  </div>
+</div>
+
+<div class="container-lg py-4" style="max-width:960px;">
+
+  <!-- ── Capacity Calculator Tool ── -->
+  <div class="section-label">Planning Tool</div>
+  <a href="calculator.html" class="tool-card mb-4">
+    <div class="tool-icon">🖩</div>
+    <div>
+      <div class="tool-title">Server Capacity Calculator</div>
+      <div class="tool-desc">
+        Model any source mix — Vision, Sony/Axis, UHD4, Matrix, Simulated —
+        and get a recommended CPU SKU. Pre-calibrated from measured test data.
+        All inputs editable for your own run.
+      </div>
+    </div>
+    <div class="tool-arrow">→</div>
+  </a>
+
+  <!-- ── Reports ── -->
+  <div class="section-label mt-3">Test Reports</div>
+  <div class="row g-3">
+
+    <!-- Report 1: 4-day endurance on qa162 -->
+    <div class="col-12 col-md-6">
+      <div class="report-card">
+        <div class="report-card-header">
+          <div class="report-card-title">Endurance — 4 Day</div>
+          <span class="verdict-pill badge-warn">Degraded</span>
+        </div>
+        <div class="report-card-body">
+          <div class="stat-grid">
+            <div class="stat-item">
+              <div class="stat-label">Server</div>
+              <div class="stat-value">16-core / 32 GB</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Sources</div>
+              <div class="stat-value">36</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Date</div>
+              <div class="stat-value">May 29, 2026</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Avg CPU</div>
+              <div class="stat-value">71.6%</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Peak CPU</div>
+              <div class="stat-value">100%</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Network</div>
+              <div class="stat-value">133.8 Mbps</div>
+            </div>
+          </div>
+          <div style="font-size:.78rem;color:#8a93a2;background:#f4f6fb;border-radius:7px;padding:.5rem .75rem;">
+            📎 Report file exceeds 100 MB (4 days of embedded time-series data) — available on request via Teams or email.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Report 2: 10-min endurance on qa162 -->
+    <div class="col-12 col-md-6">
+      <div class="report-card">
+        <div class="report-card-header">
+          <div class="report-card-title">Endurance — 10 Min Baseline</div>
+          <span class="verdict-pill badge-caution">Caution</span>
+        </div>
+        <div class="report-card-body">
+          <div class="stat-grid">
+            <div class="stat-item">
+              <div class="stat-label">Server</div>
+              <div class="stat-value">16-core / 32 GB</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Sources</div>
+              <div class="stat-value">36</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Date</div>
+              <div class="stat-value">May 28, 2026</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Avg CPU</div>
+              <div class="stat-value">66.6%</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Peak CPU</div>
+              <div class="stat-value">88.1%</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Network</div>
+              <div class="stat-value">108.7 Mbps</div>
+            </div>
+          </div>
+          <a href="reports/endurance-qa162-10min/report.html" class="report-link-btn">
+            View Full Report →
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /row -->
+
+</div><!-- /container -->
+
+<footer>
+  Arthrex ORC Performance Tools &nbsp;·&nbsp; Internal use only — not for distribution
+</footer>
+
+</body>
+</html>
