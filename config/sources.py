@@ -79,9 +79,9 @@ VISION: list[dict] = [
         "password":       _vision_pass,
     },
     {
-        "name":           "Vision 44-170",
+        "name":           "Vision 72-28",
         "source_type":    "Vision",
-        "url":            "rtsps://10.101.44.170:8554/primarycamera",
+        "url":            "rtsps://10.72.83.28:8554/primarycamera",
         "bandwidth_spec": "1920x1080@60fps",
         "bandwidth_mbps": 12,
         "username":       _vision_user,
@@ -118,6 +118,16 @@ VISION: list[dict] = [
         "name":           "Vision 60-133",
         "source_type":    "Vision",
         "url":            "rtsps://10.101.60.133:8554/primarycamera",
+        "bandwidth_spec": "1920x1080@60fps",
+        "bandwidth_mbps": 12,
+        "username":       _vision_user,
+        "password":       _vision_pass,
+    },
+    # Inactive - not used (index 6+, only first 6 are selected). Re-enable by moving above Vision 60-133.
+    {
+        "name":           "Vision 44-170",
+        "source_type":    "Vision",
+        "url":            "rtsps://10.101.44.170:8554/primarycamera",
         "bandwidth_spec": "1920x1080@60fps",
         "bandwidth_mbps": 12,
         "username":       _vision_user,

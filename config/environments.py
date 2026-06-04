@@ -71,8 +71,8 @@ SERVERS: dict[str, dict] = {
     ),
     "qa173": _server(
         name="orc-qa-173",
-        base_url=os.getenv("ORC_QA173_URL", "https://10.101.64.163"),
-        host=os.getenv("ORC_QA173_HOST",    "10.101.64.163"),
+        base_url=os.getenv("ORC_QA173_URL", "https://orc-qa-173.actdev.local"),
+        host=os.getenv("ORC_QA173_HOST",    "orc-qa-173.actdev.local"),
         hardware="32 core / 16 GB",
         tiers=[12, 24, 36],
     ),
