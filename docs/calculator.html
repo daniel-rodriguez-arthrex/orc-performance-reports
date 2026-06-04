@@ -198,13 +198,28 @@
 
 <div class="container-lg py-4" style="max-width:900px;">
 
+  <!-- Intro -->
+  <div style="background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.07);padding:1rem 1.25rem;margin-bottom:1.25rem;">
+    <div style="font-size:.95rem;font-weight:600;color:#1a2332;margin-bottom:.35rem;">How to use this tool</div>
+    <p style="font-size:.83rem;color:#4a5568;margin:0;line-height:1.7;">
+      Enter the number of each source type for the customer site and the calculator will recommend the minimum server CPU SKU.
+      Rates are pre-loaded from a 36-source, 4-day endurance test on a 16-core server - adjust the sliders to tune target utilization and headroom.
+      If you have your own test run data, expand <strong>Advanced - Recalibrate Rates</strong> to plug in your measured values.
+    </p>
+  </div>
 
-  <!-- ── SECTION 2: Custom Calibration ── -->
+  <!-- Defaults info bar -->
+  <div style="background:#f0f4ff;border:1px solid #c8d4f8;border-radius:9px;padding:.6rem 1rem;margin-bottom:1.25rem;font-size:.78rem;color:#2c3e8a;display:flex;align-items:center;gap:.5rem;">
+    <span style="font-size:1rem;">&#9432;</span>
+    <span>Default rates measured from a 36-source, 4-day endurance test on a 16-core / 32 GB server (May 2026, overhead factor 1.526x). Hover any <strong>measured</strong> or <strong>estimated</strong> badge for details.</span>
+  </div>
+
+  <!-- Advanced: Recalibrate Rates -->
   <div class="card-section">
     <div class="section-header collapsed" id="calHdr" onclick="toggleSection('calBody','calHdr')">
       <span>⚙️</span>
-      Use Your Own Test Data
-      <span style="font-weight:400;opacity:.75;font-size:.8rem;margin-left:.25rem;">— override with rates from a new test run</span>
+      Advanced - Recalibrate Rates
+      <span style="font-weight:400;opacity:.75;font-size:.8rem;margin-left:.25rem;">- override with rates from your own test run</span>
       <span class="chevron">&#9660;</span>
     </div>
     <div id="calBody" class="section-body" style="display:none;">
@@ -265,12 +280,12 @@
     </div>
   </div>
 
-  <!-- ── SECTION 3: Calculator ── -->
+  <!-- Calculator -->
   <div class="card-section">
     <div class="section-header" id="calcHdr" onclick="toggleSection('calcBody','calcHdr')">
       <span>🖩</span>
       Source Mix Capacity Calculator
-      <span style="font-weight:400;opacity:.75;font-size:.8rem;margin-left:.25rem;">— calibrated using performance report data</span>
+      <span style="font-weight:400;opacity:.75;font-size:.8rem;margin-left:.25rem;">- enter your source counts to get a server recommendation</span>
       <span class="chevron">&#9660;</span>
     </div>
     <div id="calcBody" class="section-body">
@@ -357,7 +372,7 @@ const CAP_OVERHEAD_K    = 1.526;
 
 let CAP_TYPES       = JSON.parse(JSON.stringify(DEFAULT_TYPES));  // mutable copy
 let CAP_CUR_CORES   = CAP_DEF_CUR_CORES;
-const CAP_DEF_COUNTS = { vision:0, sony:0, uhd4:0, matrix:0, sim:0 };
+const CAP_DEF_COUNTS = { vision:6, sony:2, uhd4:0, matrix:0, sim:0 };  // typical customer mix pre-filled
 const _userRates     = {};
 
 // ── Section toggle ────────────────────────────────────────────────────────
