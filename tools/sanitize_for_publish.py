@@ -19,9 +19,11 @@ Usage:
     python tools/sanitize_for_publish.py
 """
 
+import csv
 import json
 import os
 import re
+from datetime import datetime
 
 # ---------------------------------------------------------------------------
 # Source → destination mapping
@@ -31,11 +33,13 @@ REPORT_JOBS = [
         "src": "results/endurance_test_qa162_4d_20260529_134635/report.html",
         "dst": "docs/reports/endurance-qa162-4day/report.html",
         "downsample": 10,  # 4 days × 9s polling → keep every 10th point
+        "label": "Endurance — 4 Day",
     },
     {
         "src": "results/run_2026-05-21_endurance_5day/endurance_test_20260521_153954/report.html",
         "dst": "docs/reports/endurance-qa162-5day/report.html",
         "downsample": 1,   # 13.7 MB — no downsampling needed
+        "label": "Endurance — 5 Day",
     },
 ]
 
@@ -176,12 +180,128 @@ def verify(dst: str) -> None:
         print(f"  ✓  Clean  : {dst}")
 
 
+def _read_summary(src_path: str) -> dict:
+    """Read the summary.csv sitting next to the source report.html."""
+    summary_path = os.path.join(os.path.dirname(src_path), "summary.csv")
+    if not os.path.exists(summary_path):
+        return {}
+    with open(summary_path, newline="", encoding="utf-8") as fh:
+        rows = list(csv.DictReader(fh))
+    return rows[0] if rows else {}
+
+
+def _verdict(summary: dict) -> tuple[str, str]:
+    """Return (label, css_class) verdict based on CPU metrics."""
+    avg = float(summary.get("avg_cpu_pct") or 0)
+    peak = float(summary.get("max_cpu_pct") or 0)
+    if peak >= 95 or avg >= 80:
+        return "Degraded", "badge-warn"
+    if peak >= 85 or avg >= 70:
+        return "Caution", "badge-caution"
+    return "Pass", "badge-pass"
+
+
+def _fmt_date(generated_at: str) -> str:
+    """Format ISO date string → 'May 29, 2026'."""
+    try:
+        dt = datetime.fromisoformat(generated_at)
+        return dt.strftime("%b %-d, %Y")
+    except Exception:
+        try:
+            # Windows doesn't support %-d — use %d and strip leading zero
+            dt = datetime.fromisoformat(generated_at)
+            return dt.strftime("%b %d, %Y").replace(" 0", " ")
+        except Exception:
+            return generated_at
+
+
+def _build_card(job: dict, summary: dict) -> str:
+    """Generate the Bootstrap col HTML for one report card."""
+    label        = job.get("label", os.path.dirname(job["dst"]).split("/")[-1])
+    dst_rel      = job["dst"].replace("docs/", "", 1)   # path relative to docs/
+    verdict_txt, verdict_cls = _verdict(summary)
+
+    hardware     = summary.get("hardware", "—")
+    sources      = summary.get("session_tier") or summary.get("connected", "—")
+    generated_at = summary.get("generated_at", "")
+    date_str     = _fmt_date(generated_at) if generated_at else "—"
+    avg_cpu      = f"{float(summary['avg_cpu_pct']):.1f}%" if summary.get("avg_cpu_pct") else "—"
+    max_cpu      = f"{float(summary['max_cpu_pct']):.1f}%" if summary.get("max_cpu_pct") else "—"
+    network      = f"{float(summary['avg_net_recv_mbps']):.1f} Mbps" if summary.get("avg_net_recv_mbps") else "—"
+
+    return f"""
+    <div class="col-12 col-md-6">
+      <div class="report-card">
+        <div class="report-card-header">
+          <div class="report-card-title">{label}</div>
+          <span class="verdict-pill {verdict_cls}">{verdict_txt}</span>
+        </div>
+        <div class="report-card-body">
+          <div class="stat-grid">
+            <div class="stat-item">
+              <div class="stat-label">Server</div>
+              <div class="stat-value">{hardware}</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Sources</div>
+              <div class="stat-value">{sources}</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Date</div>
+              <div class="stat-value">{date_str}</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Avg CPU</div>
+              <div class="stat-value">{avg_cpu}</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Peak CPU</div>
+              <div class="stat-value">{max_cpu}</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Network</div>
+              <div class="stat-value">{network}</div>
+            </div>
+          </div>
+          <a href="{dst_rel}" class="report-link-btn">
+            View Full Report &rarr;
+          </a>
+        </div>
+      </div>
+    </div>"""
+
+
+def rebuild_index(jobs: list, index_path: str = "docs/index.html") -> None:
+    """Regenerate the <!-- CARDS:START/END --> block in index.html."""
+    with open(index_path, encoding="utf-8") as fh:
+        content = fh.read()
+
+    cards_html = ""
+    for job in jobs:
+        if not os.path.exists(job["src"]):
+            continue
+        summary = _read_summary(job["src"])
+        cards_html += _build_card(job, summary)
+
+    new_block = f"<!-- CARDS:START -->{cards_html}\n<!-- CARDS:END -->"
+    content = re.sub(
+        r"<!-- CARDS:START -->.*?<!-- CARDS:END -->",
+        new_block,
+        content,
+        flags=re.DOTALL,
+    )
+    with open(index_path, "w", encoding="utf-8") as fh:
+        fh.write(content)
+    print(f"  Index    : rebuilt {len(jobs)} card(s) in {index_path}")
+
+
 if __name__ == "__main__":
     base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     os.chdir(base)
 
     print("ORC Report Sanitizer")
     print("=" * 50)
+    active_jobs = []
     for job in REPORT_JOBS:
         src, dst = job["src"], job["dst"]
         downsample = job.get("downsample", 1)
@@ -190,6 +310,8 @@ if __name__ == "__main__":
             continue
         process(src, dst, downsample=downsample)
         verify(dst)
+        active_jobs.append(job)
         print()
 
-    print("Done.")
+    rebuild_index(active_jobs)
+    print("\nDone.")
