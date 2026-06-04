@@ -23,7 +23,7 @@ This project exercises the ORC application under realistic load conditions:
 |---|---|
 | Python | 3.10+ |
 | Playwright (Python) | 1.44+ |
-| WinRM access | `orc-qa-155` (server metrics only) |
+| WinRM access | ORC server host (server metrics only) |
 | Clumsy | 0.3+ (network degradation scenario only) |
 
 WinRM must be enabled on the ORC server host. Run on the server as Administrator:
