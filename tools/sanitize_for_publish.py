@@ -32,6 +32,11 @@ REPORT_JOBS = [
         "dst": "docs/reports/endurance-qa162-4day/report.html",
         "downsample": 10,  # 4 days × 9s polling → keep every 10th point
     },
+    {
+        "src": "results/run_2026-05-21_endurance_5day/endurance_test_20260521_153954/report.html",
+        "dst": "docs/reports/endurance-qa162-5day/report.html",
+        "downsample": 1,   # 13.7 MB — no downsampling needed
+    },
 ]
 
 # Time-series keys inside window._reportData whose arrays should be downsampled.
