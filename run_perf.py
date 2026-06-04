@@ -132,7 +132,7 @@ def parse_args():
     )
     parser.add_argument(
         "--server",
-        choices=["qa155", "qa160", "qa162", "qa172", "visions", "all"],
+        choices=["qa155", "qa160", "qa162", "qa172", "qa173", "visions", "all"],
         default="qa155",
         help=(
             "ORC server to target. 'all' iterates every server sequentially "
