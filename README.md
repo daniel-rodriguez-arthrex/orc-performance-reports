@@ -1,5 +1,7 @@
 # ORC Performance Test Suite
 
+**📊 Reports & Capacity Calculator:** https://daniel-rodriguez-arthrex.github.io/orc-performance-reports/
+
 Automated performance testing for **ORC (OR Command) 2.1.0**, targeting session scaling, bandwidth enforcement, WebRTC stream stability, layout responsiveness, and long-duration soak testing using Playwright and WinRM server metrics.
 
 ---
