@@ -28,11 +28,6 @@ import re
 # ---------------------------------------------------------------------------
 REPORT_JOBS = [
     {
-        "src": "results/endurance_test_20260528_101136/report.html",
-        "dst": "docs/reports/endurance-qa162-10min/report.html",
-        "downsample": 1,   # short run — no downsampling needed
-    },
-    {
         "src": "results/endurance_test_qa162_4d_20260529_134635/report.html",
         "dst": "docs/reports/endurance-qa162-4day/report.html",
         "downsample": 10,  # 4 days × 9s polling → keep every 10th point
