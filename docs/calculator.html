@@ -938,7 +938,7 @@
           <th style='padding:3px 4px 3px 10px;font-weight:600;text-align:right;'>Total</th>
         </tr></thead><tbody>`;
 
-      netEl.innerHTML = `<div style="font-size:.75rem;font-weight:600;color:#8a93a2;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem;">Network Egress</div>` +
+      netEl.innerHTML = `<div style="font-size:.8rem;font-weight:700;color:#1e2d45;margin-bottom:.5rem;">Network Egress</div>` +
         tableHdr('Mbps / stream') + netRows.join('') +
         `</tbody><tfoot><tr style='border-top:1px solid #dde3f8;'>
           <td colspan='3' style='padding:5px 10px 4px 4px;font-weight:700;'>Total inbound</td>
@@ -959,7 +959,7 @@
       const pct = totalWithBase / (serverRamGb * 1024) * 100;
       const ramOver = pct >= 80;
 
-      ramEl.innerHTML = `<div style="font-size:.75rem;font-weight:600;color:#8a93a2;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem;">RAM Estimate</div>` +
+      ramEl.innerHTML = `<div style="font-size:.8rem;font-weight:700;color:#1e2d45;margin-bottom:.5rem;">RAM Estimate</div>` +
         tableHdr('MB / stream') + ramRows.join('') +
         `</tbody><tfoot>
           <tr style='border-top:1px solid #dde3f8;'>
