@@ -168,23 +168,24 @@ def _memory_chart_js(rows: list[dict]) -> str:
     labels   = [f"{float(r['elapsed_s'])/3600:.3f}" for r in sampled]
     wset     = [float(r["working_set_mb"]) for r in sampled]
     priv     = [float(r["private_mb"]) for r in sampled]
-    avail    = [float(r["sys_avail_mb"]) for r in sampled]
+    avail_gb = [round(float(r["sys_avail_mb"]) / 1024, 3) for r in sampled]
     lbl_js   = _js_array(labels)
     wset_js  = _js_array(wset)
     priv_js  = _js_array(priv)
-    avail_js = _js_array(avail)
+    avail_js = _js_array(avail_gb)
     return "\n".join([
         "new Chart(document.getElementById('memChart'), {",
         "  type: 'line',",
         f"  data: {{labels: {lbl_js}, datasets: [",
-        f"    {{label: 'SRS Working Set (MB)', data: {wset_js}, borderColor: '{_PRIMARY}', backgroundColor: '{_PRIMARY}18', tension: 0.2, borderWidth: 1.5, pointRadius: 0}},",
-        f"    {{label: 'SRS Private Bytes (MB)', data: {priv_js}, borderColor: '{_PURPLE}', backgroundColor: '{_PURPLE}18', tension: 0.2, borderWidth: 1.5, pointRadius: 0}},",
-        f"    {{label: 'Sys Avail RAM (MB)', data: {avail_js}, borderColor: '{_SUCCESS}', backgroundColor: '{_SUCCESS}18', tension: 0.2, borderWidth: 1.5, pointRadius: 0}}",
+        f"    {{label: 'SRS Working Set (MB)', data: {wset_js}, borderColor: '{_PRIMARY}', backgroundColor: '{_PRIMARY}18', tension: 0.2, borderWidth: 1.5, pointRadius: 0, yAxisID: 'yMB'}},",
+        f"    {{label: 'SRS Private Bytes (MB)', data: {priv_js}, borderColor: '{_PURPLE}', backgroundColor: '{_PURPLE}18', tension: 0.2, borderWidth: 1.5, pointRadius: 0, yAxisID: 'yMB'}},",
+        f"    {{label: 'Sys Avail RAM (GB)', data: {avail_js}, borderColor: '{_SUCCESS}', backgroundColor: '{_SUCCESS}18', tension: 0.2, borderWidth: 2, pointRadius: 0, yAxisID: 'yGB'}}",
         "  ]},",
         "  options: { responsive: true, interaction: { mode: 'index', intersect: false },",
         "    scales: {",
         "      x: { title: { display: true, text: 'Elapsed (hours)' }, ticks: { maxTicksLimit: 24, font: { size: 10 } } },",
-        "      y: { title: { display: true, text: 'MB' }, ticks: { font: { size: 10 } } }",
+        "      yMB: { position: 'left',  title: { display: true, text: 'MB (SRS process)' }, ticks: { font: { size: 10 } } },",
+        "      yGB: { position: 'right', title: { display: true, text: 'GB (Sys Avail RAM)' }, ticks: { font: { size: 10 } }, grid: { drawOnChartArea: false } }",
         "    },",
         "    plugins: { legend: { position: 'top' } }",
         "  }",
@@ -267,7 +268,7 @@ def build_html(run_id: str, stats: dict, rows: list[dict]) -> str:
         _stat_card("Growth Rate",         f"{rate:,.0f}",   "/hr",      accent=rate_color),
         _stat_card("Peak Handles",        f"{stats['handle_max']:,}",   accent=_DANGER),
         _stat_card("SRS Restarts",        len(stats["restarts"]),        accent=_WARNING if stats["restarts"] else _SUCCESS),
-        _stat_card("Sys RAM Min",         f"{stats['avail_min']:.0f}",  " MB", accent=avail_color),
+        _stat_card("Sys RAM Min",         f"{stats['avail_min']/1024:.2f}",  " GB", accent=avail_color),
     ])
 
     # ── Restart events table ────────────────────────────────────────────────
@@ -308,10 +309,10 @@ def build_html(run_id: str, stats: dict, rows: list[dict]) -> str:
                 <td class="text-end">{stats['wset_min']:.1f}</td><td class="text-end">{stats['wset_max']:.1f}</td><td class="text-end">{stats['wset_avg']:.1f}</td></tr>
             <tr><td>SRS Private Bytes (MB)</td>
                 <td class="text-end">{stats['priv_min']:.1f}</td><td class="text-end">{stats['priv_max']:.1f}</td><td class="text-end">{stats['priv_avg']:.1f}</td></tr>
-            <tr><td {avail_min_style}>System Available RAM (MB)</td>
-                <td class="text-end" {avail_min_style}>{stats['avail_min']:.0f}</td>
-                <td class="text-end">{stats['avail_max']:.0f}</td>
-                <td class="text-end">{stats['avail_avg']:.0f}</td></tr>
+            <tr><td {avail_min_style}>System Available RAM (GB)</td>
+                <td class="text-end" {avail_min_style}>{stats['avail_min']/1024:.2f}</td>
+                <td class="text-end">{stats['avail_max']/1024:.2f}</td>
+                <td class="text-end">{stats['avail_avg']/1024:.2f}</td></tr>
             <tr><td>FFmpeg Process Count</td>
                 <td class="text-end">{stats['ffmpeg_min']}</td><td class="text-end">{stats['ffmpeg_max']}</td><td class="text-end">{stats['ffmpeg_avg']:.1f}</td></tr>
           </tbody>
