@@ -237,10 +237,6 @@ def build_html(run_id: str, stats: dict, rows: list[dict]) -> str:
     else:
         verdict_label, verdict_bg, verdict_icon = "STABLE", _SUCCESS, "✓"
 
-    mem_note = (
-        f" &nbsp;|&nbsp; <strong style='color:#fff;'>⚠ System RAM hit {stats['avail_min']:.0f} MB</strong>"
-        if stats["avail_min"] < 100 else ""
-    )
     verdict_html = f"""
     <div style="background:{verdict_bg};color:#fff;border-radius:10px;padding:18px 24px;margin-bottom:1.5rem;">
       <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
@@ -249,7 +245,6 @@ def build_html(run_id: str, stats: dict, rows: list[dict]) -> str:
           <div style="font-size:.95rem;font-weight:600;">
             {_fmt_duration(stats['duration_s'])} observed &nbsp;|&nbsp;
             post-restart rate: <strong>{rate:,.0f} handles/hr</strong>
-            {mem_note}
           </div>
           <div style="font-size:.82rem;opacity:.9;margin-top:3px;">
             Handles grew <strong>{delta:+,}</strong> from baseline {stats['handle_start']:,} → {stats['handle_end']:,}.
