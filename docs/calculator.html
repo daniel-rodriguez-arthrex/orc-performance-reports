@@ -657,53 +657,22 @@
               oninput="capSliderUpdate(this,'capHr2Val',0,50);capMixCalc()">
             <span class="cap-slider-val" id="capHr2Val">20%</span>
           </div>
+          <div class="cap-slider-group">
+            <span class="cap-slider-label">Server RAM:</span>
+            <input type="number" id="ramTotalGb" min="4" max="2048" value="16" step="4"
+              style="width:62px;padding:2px 6px;border:1px solid #d0d7e8;border-radius:6px;font-size:.85rem;text-align:center;"
+              oninput="capMixCalc()">
+            <span class="cap-slider-val">GB</span>
+          </div>
           <button class="cap-reset-btn" onclick="capMixReset()">Reset</button>
         </div>
 
         <!-- Result -->
         <div class="cap-result" id="capMixResult">Enter source counts above to see the recommendation.</div>
-      </div>
-    </div>
 
-    <!-- Network Egress Panel -->
-    <div class="card-section">
-      <div class="section-header" id="netHdr" onclick="toggleSection('netBody','netHdr')">
-        <span>📡</span>
-        Network Egress Check
-        <span style="font-weight:400;opacity:.75;font-size:.8rem;margin-left:.25rem;">- NIC bandwidth required for your source mix</span>
-        <span class="chevron">&#9660;</span>
-      </div>
-      <div id="netBody" class="section-body">
-        <p style="font-size:.84rem;color:#495670;margin:0 0 1rem;">
-          Estimated inbound bandwidth per source type (measured or estimated from reference runs).
-          Flag threshold: <strong>800 Mbps</strong> (practical limit of a 1 Gbps NIC). Above that, a 10 GbE NIC is recommended.
-        </p>
-        <div id="netResult" style="font-size:.88rem;color:#8a93a2;">Enter source counts in the calculator above to see network estimate.</div>
-      </div>
-    </div>
-
-    <!-- RAM Panel -->
-    <div class="card-section">
-      <div class="section-header" id="ramHdr" onclick="toggleSection('ramBody','ramHdr')">
-        <span>🧠</span>
-        RAM Check
-        <span style="font-weight:400;opacity:.75;font-size:.8rem;margin-left:.25rem;">- estimated working-set memory for your source mix</span>
-        <span class="chevron">&#9660;</span>
-      </div>
-      <div id="ramBody" class="section-body">
-        <p style="font-size:.84rem;color:#495670;margin:0 0 1rem;">
-          Per-stream ffmpeg working-set RAM (measured from reference runs).
-          Add a fixed base of <strong>~1 GB</strong> for ORC + SRS process overhead.
-          Flag threshold: <strong>80% of server RAM</strong>.
-        </p>
-        <div style="font-size:.8rem;color:#8a93a2;margin-bottom:.75rem;">
-          Enter server total RAM (GB) to check fit:&nbsp;
-          <input type="number" id="ramTotalGb" min="4" max="2048" value="16" step="4"
-            style="width:70px;padding:3px 6px;border:1px solid #d0d7e8;border-radius:6px;font-size:.85rem;"
-            oninput="updateSecondaryPanels()">
-          &nbsp;GB
-        </div>
-        <div id="ramResult" style="font-size:.88rem;color:#8a93a2;">Enter source counts in the calculator above to see RAM estimate.</div>
+        <!-- Network + RAM inline results -->
+        <div id="netResult" style="margin-top:.75rem;"></div>
+        <div id="ramResult" style="margin-top:.75rem;"></div>
       </div>
     </div>
 
@@ -954,8 +923,8 @@
       const netEl  = document.getElementById('netResult');
       const ramEl  = document.getElementById('ramResult');
       if (!anyCount) {
-        netEl.innerHTML = '<span style="color:#8a93a2;">Enter source counts in the calculator above to see network estimate.</span>';
-        ramEl.innerHTML = '<span style="color:#8a93a2;">Enter source counts in the calculator above to see RAM estimate.</span>';
+        netEl.innerHTML = '';
+        ramEl.innerHTML = '';
         return;
       }
 
@@ -1024,7 +993,6 @@
       u.value = 60; capSliderUpdate(u, 'capUtil2Val', 40, 80);
       h.value = 20; capSliderUpdate(h, 'capHr2Val', 0, 50);
       capMixCalc();
-      updateSecondaryPanels();
     }
 
     // ── Derive rates from custom calibration inputs ───────────────────────────
