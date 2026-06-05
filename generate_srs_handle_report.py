@@ -168,24 +168,43 @@ def _memory_chart_js(rows: list[dict]) -> str:
     labels   = [f"{float(r['elapsed_s'])/3600:.3f}" for r in sampled]
     wset     = [float(r["working_set_mb"]) for r in sampled]
     priv     = [float(r["private_mb"]) for r in sampled]
-    avail_gb = [round(float(r["sys_avail_mb"]) / 1024, 3) for r in sampled]
     lbl_js   = _js_array(labels)
     wset_js  = _js_array(wset)
     priv_js  = _js_array(priv)
-    avail_js = _js_array(avail_gb)
     return "\n".join([
         "new Chart(document.getElementById('memChart'), {",
         "  type: 'line',",
         f"  data: {{labels: {lbl_js}, datasets: [",
-        f"    {{label: 'SRS Working Set (MB)', data: {wset_js}, borderColor: '{_PRIMARY}', backgroundColor: '{_PRIMARY}18', tension: 0.2, borderWidth: 1.5, pointRadius: 0, yAxisID: 'yMB'}},",
-        f"    {{label: 'SRS Private Bytes (MB)', data: {priv_js}, borderColor: '{_PURPLE}', backgroundColor: '{_PURPLE}18', tension: 0.2, borderWidth: 1.5, pointRadius: 0, yAxisID: 'yMB'}},",
-        f"    {{label: 'Sys Avail RAM (GB)', data: {avail_js}, borderColor: '{_SUCCESS}', backgroundColor: '{_SUCCESS}18', tension: 0.2, borderWidth: 2, pointRadius: 0, yAxisID: 'yGB'}}",
+        f"    {{label: 'SRS Working Set (MB)', data: {wset_js}, borderColor: '{_PRIMARY}', backgroundColor: '{_PRIMARY}18', tension: 0.2, borderWidth: 1.5, pointRadius: 0}},",
+        f"    {{label: 'SRS Private Bytes (MB)', data: {priv_js}, borderColor: '{_PURPLE}', backgroundColor: '{_PURPLE}18', tension: 0.2, borderWidth: 1.5, pointRadius: 0}}",
         "  ]},",
         "  options: { responsive: true, interaction: { mode: 'index', intersect: false },",
         "    scales: {",
         "      x: { title: { display: true, text: 'Elapsed (hours)' }, ticks: { maxTicksLimit: 24, font: { size: 10 } } },",
-        "      yMB: { position: 'left',  title: { display: true, text: 'MB (SRS process)' }, ticks: { font: { size: 10 } } },",
-        "      yGB: { position: 'right', title: { display: true, text: 'GB (Sys Avail RAM)' }, ticks: { font: { size: 10 } }, grid: { drawOnChartArea: false } }",
+        "      y: { title: { display: true, text: 'MB' }, ticks: { font: { size: 10 } } }",
+        "    },",
+        "    plugins: { legend: { position: 'top' } }",
+        "  }",
+        "});",
+    ])
+
+
+def _avail_ram_chart_js(rows: list[dict]) -> str:
+    sampled  = _downsample(rows, 1440)
+    labels   = [f"{float(r['elapsed_s'])/3600:.3f}" for r in sampled]
+    avail_gb = [round(float(r["sys_avail_mb"]) / 1024, 3) for r in sampled]
+    lbl_js   = _js_array(labels)
+    avail_js = _js_array(avail_gb)
+    return "\n".join([
+        "new Chart(document.getElementById('availRamChart'), {",
+        "  type: 'line',",
+        f"  data: {{labels: {lbl_js}, datasets: [",
+        f"    {{label: 'Sys Avail RAM (GB)', data: {avail_js}, borderColor: '{_SUCCESS}', backgroundColor: '{_SUCCESS}18', tension: 0.2, borderWidth: 2, pointRadius: 0, fill: true}}",
+        "  ]},",
+        "  options: { responsive: true, interaction: { mode: 'index', intersect: false },",
+        "    scales: {",
+        "      x: { title: { display: true, text: 'Elapsed (hours)' }, ticks: { maxTicksLimit: 24, font: { size: 10 } } },",
+        "      y: { title: { display: true, text: 'GB Available' }, beginAtZero: true, ticks: { font: { size: 10 } } }",
         "    },",
         "    plugins: { legend: { position: 'top' } }",
         "  }",
@@ -322,6 +341,7 @@ def build_html(run_id: str, stats: dict, rows: list[dict]) -> str:
 
     js_handle  = _handle_chart_js(rows)
     js_memory  = _memory_chart_js(rows)
+    js_avail   = _avail_ram_chart_js(rows)
     js_ffmpeg  = _ffmpeg_chart_js(rows)
 
     scenario_badge = (
@@ -380,9 +400,17 @@ def build_html(run_id: str, stats: dict, rows: list[dict]) -> str:
 
   <!-- Memory Chart -->
   <div class="detail-card mb-4">
-    <div class="detail-header">Memory over Time</div>
+    <div class="detail-header">SRS Process Memory over Time</div>
     <div class="detail-body">
       <canvas id="memChart" style="max-height:320px;"></canvas>
+    </div>
+  </div>
+
+  <!-- Sys Avail RAM Chart -->
+  <div class="detail-card mb-4">
+    <div class="detail-header">System Available RAM over Time</div>
+    <div class="detail-body">
+      <canvas id="availRamChart" style="max-height:320px;"></canvas>
     </div>
   </div>
 
@@ -409,6 +437,7 @@ def build_html(run_id: str, stats: dict, rows: list[dict]) -> str:
 document.addEventListener('DOMContentLoaded', function() {{
 {js_handle}
 {js_memory}
+{js_avail}
 {js_ffmpeg}
 }});
 </script>
