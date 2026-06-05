@@ -202,7 +202,7 @@ MATRIX: list[dict] = [
     {
         "name":           "Matrix Extron Room 1",
         "source_type":    "Matrix",
-        "url":            "rtmp://10.101.64.129:1935/matrix/room1",
+        "url":            "rtmp://10.101.64.163:1935/matrix/room1",
         "bandwidth_spec": "1920x1080@30fps",
         "bandwidth_mbps": 8,
         "username":       "",
