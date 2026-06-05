@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,42 +10,86 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
   <style>
     :root {
-      --art-blue:  #0077C8;
-      --art-dark:  #003865;
-      --art-navy:  #1a2332;
+      --art-blue: #0077C8;
+      --art-dark: #003865;
+      --art-navy: #1a2332;
     }
-    body { font-family: 'Inter', sans-serif; background: #f4f6fb; color: #1a2332; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f4f6fb;
+      color: #1a2332;
+    }
 
     /* ── Nav ── */
     .top-nav {
       background: linear-gradient(135deg, var(--art-navy) 0%, #2d3561 100%);
       padding: .75rem 1.5rem;
-      display: flex; align-items: center; gap: 1rem;
-      box-shadow: 0 2px 12px rgba(0,0,0,.35);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, .35);
     }
-    .nav-title { color: #fff; font-size: 1.05rem; font-weight: 600; letter-spacing: .02em; }
-    .nav-sub   { color: rgba(255,255,255,.55); font-size: .8rem; margin-left: auto; }
-    .nav-back  { color: rgba(255,255,255,.7); font-size: .82rem; text-decoration: none; }
-    .nav-back:hover { color: #fff; }
+
+    .nav-title {
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+
+    .nav-sub {
+      color: rgba(255, 255, 255, .55);
+      font-size: .8rem;
+      margin-left: auto;
+    }
+
+    .nav-back {
+      color: rgba(255, 255, 255, .7);
+      font-size: .82rem;
+      text-decoration: none;
+    }
+
+    .nav-back:hover {
+      color: #fff;
+    }
 
     /* ── Cards ── */
     .card-section {
       background: #fff;
       border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,.07);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, .07);
       margin-bottom: 1.25rem;
       overflow: hidden;
     }
+
     .section-header {
-      display: flex; align-items: center; gap: .6rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
       padding: .75rem 1.1rem;
       background: linear-gradient(135deg, var(--art-navy) 0%, #2d3561 100%);
-      color: #fff; font-size: .9rem; font-weight: 600;
-      cursor: pointer; user-select: none;
+      color: #fff;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
     }
-    .section-header .chevron { margin-left: auto; font-size: .75rem; opacity: .7; transition: transform .25s; }
-    .section-header.collapsed .chevron { transform: rotate(-90deg); }
-    .section-body { padding: 1rem 1.1rem; }
+
+    .section-header .chevron {
+      margin-left: auto;
+      font-size: .75rem;
+      opacity: .7;
+      transition: transform .25s;
+    }
+
+    .section-header.collapsed .chevron {
+      transform: rotate(-90deg);
+    }
+
+    .section-body {
+      padding: 1rem 1.1rem;
+    }
 
     /* ── Reference data panel ── */
     .ref-grid {
@@ -53,17 +98,35 @@
       gap: .75rem;
       margin-bottom: .75rem;
     }
+
     .ref-stat {
       background: #f0f4ff;
       border-radius: 8px;
       padding: .6rem .85rem;
     }
-    .ref-stat-label { font-size: .72rem; color: #8a93a2; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
-    .ref-stat-val   { font-size: 1.1rem; font-weight: 700; color: var(--art-navy); margin-top: 2px; }
+
+    .ref-stat-label {
+      font-size: .72rem;
+      color: #8a93a2;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      font-weight: 600;
+    }
+
+    .ref-stat-val {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--art-navy);
+      margin-top: 2px;
+    }
 
     .ref-note {
-      background: #fffbec; border: 1px solid #ffe58f; border-radius: 7px;
-      padding: .5rem .85rem; font-size: .78rem; color: #7d5a00;
+      background: #fffbec;
+      border: 1px solid #ffe58f;
+      border-radius: 7px;
+      padding: .5rem .85rem;
+      font-size: .78rem;
+      color: #7d5a00;
     }
 
     /* ── Calibration inputs ── */
@@ -73,349 +136,667 @@
       gap: .75rem;
       margin-bottom: 1rem;
     }
-    .cal-field label { font-size: .78rem; font-weight: 600; color: #4a5568; margin-bottom: .2rem; display: block; }
-    .cal-field .hint { font-size: .7rem; color: #8a93a2; margin-top: 2px; }
-    .cal-field input[type=number] {
-      width: 100%; padding: .35rem .6rem;
-      border: 1px solid #d1d5db; border-radius: 6px;
-      font-size: .88rem; font-family: 'Inter', monospace;
+
+    .cal-field label {
+      font-size: .78rem;
+      font-weight: 600;
+      color: #4a5568;
+      margin-bottom: .2rem;
+      display: block;
     }
-    .cal-field input[type=number]:focus { outline: none; border-color: var(--art-blue); box-shadow: 0 0 0 2px rgba(0,119,200,.15); }
+
+    .cal-field .hint {
+      font-size: .7rem;
+      color: #8a93a2;
+      margin-top: 2px;
+    }
+
+    .cal-field input[type=number] {
+      width: 100%;
+      padding: .35rem .6rem;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: .88rem;
+      font-family: 'Inter', monospace;
+    }
+
+    .cal-field input[type=number]:focus {
+      outline: none;
+      border-color: var(--art-blue);
+      box-shadow: 0 0 0 2px rgba(0, 119, 200, .15);
+    }
 
     .cal-derive-btn {
-      background: var(--art-blue); color: #fff; border: none;
-      padding: .4rem 1rem; border-radius: 6px; font-size: .82rem; font-weight: 600;
-      cursor: pointer; transition: background .15s;
+      background: var(--art-blue);
+      color: #fff;
+      border: none;
+      padding: .4rem 1rem;
+      border-radius: 6px;
+      font-size: .82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
     }
-    .cal-derive-btn:hover { background: var(--art-dark); }
+
+    .cal-derive-btn:hover {
+      background: var(--art-dark);
+    }
+
     .cal-derive-result {
       display: none;
-      margin-top: .5rem; padding: .45rem .75rem; border-radius: 6px;
-      background: #d1f0e0; color: #146c43; font-size: .78rem; font-weight: 500;
+      margin-top: .5rem;
+      padding: .45rem .75rem;
+      border-radius: 6px;
+      background: #d1f0e0;
+      color: #146c43;
+      font-size: .78rem;
+      font-weight: 500;
     }
 
     /* ── Source type table ── */
-    .cap-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    .cap-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .88rem;
+    }
+
     .cap-table th {
-      background: #f0f4ff; padding: .55rem 10px;
-      font-size: .75rem; font-weight: 700; color: #3a4a8a;
-      text-transform: uppercase; letter-spacing: .05em;
+      background: #f0f4ff;
+      padding: .55rem 10px;
+      font-size: .75rem;
+      font-weight: 700;
+      color: #3a4a8a;
+      text-transform: uppercase;
+      letter-spacing: .05em;
     }
-    .cap-table td { padding: 8px 10px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
-    .cap-table tbody tr:last-child td { border-bottom: none; }
-    .cap-table tbody tr.cap-row-active { background: #fafbff; }
-    .cap-total-row td { padding: .6rem 10px; font-weight: 700; background: #f0f4ff; font-size: .85rem; }
-    .cap-total-val { text-align: right; font-family: monospace; font-size: .95rem; color: #2c5fcc; padding-right: 14px; }
-    .cap-type-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+
+    .cap-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #f0f0f0;
+      vertical-align: middle;
+    }
+
+    .cap-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .cap-table tbody tr.cap-row-active {
+      background: #fafbff;
+    }
+
+    .cap-total-row td {
+      padding: .6rem 10px;
+      font-weight: 700;
+      background: #f0f4ff;
+      font-size: .85rem;
+    }
+
+    .cap-total-val {
+      text-align: right;
+      font-family: monospace;
+      font-size: .95rem;
+      color: #2c5fcc;
+      padding-right: 14px;
+    }
+
+    .cap-type-dot {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
     .cap-count-input {
-      width: 70px; text-align: center; padding: .25rem .4rem;
-      border: 1px solid #d1d5db; border-radius: 6px; font-size: .88rem;
+      width: 70px;
+      text-align: center;
+      padding: .25rem .4rem;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: .88rem;
     }
+
     .cap-rate-input {
-      width: 80px; text-align: center; padding: .25rem .4rem;
-      border: 1px solid #d1d5db; border-radius: 6px; font-size: .82rem; font-family: monospace;
+      width: 80px;
+      text-align: center;
+      padding: .25rem .4rem;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: .82rem;
+      font-family: monospace;
     }
-    .cap-rate-input.overridden { border-color: #dc6803; background: #fff8f0; }
-    .cap-work-cell { text-align: right; font-family: monospace; padding-right: 14px; color: #8a93a2; }
-    .cap-work-cell.active { color: var(--art-navy); font-weight: 600; }
+
+    .cap-rate-input.overridden {
+      border-color: #dc6803;
+      background: #fff8f0;
+    }
+
+    .cap-work-cell {
+      text-align: right;
+      font-family: monospace;
+      padding-right: 14px;
+      color: #8a93a2;
+    }
+
+    .cap-work-cell.active {
+      color: var(--art-navy);
+      font-weight: 600;
+    }
 
     /* Badges */
     .cap-badge {
-      display: inline-block; padding: 1px 7px; border-radius: 10px;
-      font-size: .67rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; white-space: nowrap;
+      display: inline-block;
+      padding: 1px 7px;
+      border-radius: 10px;
+      font-size: .67rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      white-space: nowrap;
     }
-    .cap-badge.measured  { background: #d1fae5; color: #065f46; }
-    .cap-badge.estimated { background: #fef3c7; color: #92400e; }
+
+    .cap-badge.measured {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .cap-badge.estimated {
+      background: #fef3c7;
+      color: #92400e;
+    }
 
     /* ── Sliders ── */
-    .cap-sliders { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.5rem; padding: .75rem 0 .5rem; }
-    .cap-slider-group { display: flex; align-items: center; gap: .5rem; }
-    .cap-slider-label { font-size: .8rem; font-weight: 600; color: #4a5568; white-space: nowrap; }
+    .cap-sliders {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: .75rem 1.5rem;
+      padding: .75rem 0 .5rem;
+    }
+
+    .cap-slider-group {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .cap-slider-label {
+      font-size: .8rem;
+      font-weight: 600;
+      color: #4a5568;
+      white-space: nowrap;
+    }
+
     .cap-slider {
-      -webkit-appearance: none; height: 5px; border-radius: 3px;
+      -webkit-appearance: none;
+      height: 5px;
+      border-radius: 3px;
       background: linear-gradient(to right, var(--art-blue) 0%, var(--art-blue) var(--pct, 50%), #d1d5db var(--pct, 50%), #d1d5db 100%);
-      outline: none; width: 130px; cursor: pointer;
+      outline: none;
+      width: 130px;
+      cursor: pointer;
     }
-    .cap-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--art-blue); cursor: pointer; }
-    .cap-slider-val { font-size: .82rem; font-weight: 700; color: var(--art-blue); width: 36px; }
+
+    .cap-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--art-blue);
+      cursor: pointer;
+    }
+
+    .cap-slider-val {
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--art-blue);
+      width: 36px;
+    }
+
     .cap-reset-btn {
-      background: #f0f4ff; color: #2c5fcc; border: 1px solid #c8d4f8;
-      padding: .3rem .85rem; border-radius: 6px; font-size: .8rem; font-weight: 600; cursor: pointer;
+      background: #f0f4ff;
+      color: #2c5fcc;
+      border: 1px solid #c8d4f8;
+      padding: .3rem .85rem;
+      border-radius: 6px;
+      font-size: .8rem;
+      font-weight: 600;
+      cursor: pointer;
     }
-    .cap-reset-btn:hover { background: #dce6ff; }
+
+    .cap-reset-btn:hover {
+      background: #dce6ff;
+    }
 
     /* ── Result ── */
     .cap-result {
-      margin-top: .75rem; padding: .85rem 1rem;
-      background: #f8f9ff; border: 1px solid #e0e7ff; border-radius: 9px;
+      margin-top: .75rem;
+      padding: .85rem 1rem;
+      background: #f8f9ff;
+      border: 1px solid #e0e7ff;
+      border-radius: 9px;
       font-size: .88rem;
     }
-    .cap-result-steps { display: flex; flex-direction: column; gap: .5rem; margin-bottom: .75rem; }
-    .cap-step-row { display: flex; gap: .75rem; font-size: .84rem; }
-    .cap-step-label { min-width: 160px; font-weight: 600; color: #4a5568; display: flex; align-items: flex-start; gap: .4rem; }
+
+    .cap-result-steps {
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      margin-bottom: .75rem;
+    }
+
+    .cap-step-row {
+      display: flex;
+      gap: .75rem;
+      font-size: .84rem;
+    }
+
+    .cap-step-label {
+      min-width: 160px;
+      font-weight: 600;
+      color: #4a5568;
+      display: flex;
+      align-items: flex-start;
+      gap: .4rem;
+    }
+
     .cap-step-num {
-      background: var(--art-blue); color: #fff;
-      border-radius: 50%; width: 18px; height: 18px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: .68rem; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+      background: var(--art-blue);
+      color: #fff;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .68rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
     }
-    .cap-step-val { color: #1a2332; }
+
+    .cap-step-val {
+      color: #1a2332;
+    }
+
     .cap-step-val code {
-      background: #f0f4ff; padding: 2px 7px; border-radius: 4px;
-      font-size: .8rem; color: #2c3e8a;
+      background: #f0f4ff;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: .8rem;
+      color: #2c3e8a;
     }
-    .cap-step-hint { font-size: .74rem; color: #8a93a2; }
-    .cap-step-breakdown { line-height: 1.85; }
-    .cap-breakdown-item { display: flex; align-items: center; gap: 6px; }
-    .cap-breakdown-dot  { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+    .cap-step-hint {
+      font-size: .74rem;
+      color: #8a93a2;
+    }
+
+    .cap-step-breakdown {
+      line-height: 1.85;
+    }
+
+    .cap-breakdown-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cap-breakdown-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
     .cap-verdict {
-      display: flex; align-items: center; gap: .6rem;
-      padding: .7rem 1rem; border-radius: 7px; font-weight: 700; font-size: .9rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      padding: .7rem 1rem;
+      border-radius: 7px;
+      font-weight: 700;
+      font-size: .9rem;
     }
-    .cap-verdict.ok  { background: #d1f0e0; color: #146c43; }
-    .cap-verdict.bad { background: #fde8e8; color: #9b1c1c; }
-    .cap-verdict-sku { font-size: 1.35rem; font-weight: 900; margin-left: 4px; }
+
+    .cap-verdict.ok {
+      background: #d1f0e0;
+      color: #146c43;
+    }
+
+    .cap-verdict.bad {
+      background: #fde8e8;
+      color: #9b1c1c;
+    }
+
+    .cap-verdict-sku {
+      font-size: 1.35rem;
+      font-weight: 900;
+      margin-left: 4px;
+    }
+
     .cap-est-warn {
-      margin-top: .5rem; padding: .45rem .75rem; border-radius: 6px;
-      background: #fffbec; border: 1px solid #ffe58f;
-      font-size: .78rem; color: #7d5a00;
+      margin-top: .5rem;
+      padding: .45rem .75rem;
+      border-radius: 6px;
+      background: #fffbec;
+      border: 1px solid #ffe58f;
+      font-size: .78rem;
+      color: #7d5a00;
     }
 
     /* ── Footer ── */
-    footer { text-align: center; padding: 1.5rem; font-size: .75rem; color: #aab0c0; margin-top: 1rem; }
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: .75rem;
+      color: #aab0c0;
+      margin-top: 1rem;
+    }
   </style>
 </head>
+
 <body>
 
-<!-- Nav -->
-<div class="top-nav">
-  <img src="ArthrexLogo.png" alt="Arthrex" style="height:52px;filter:invert(1);mix-blend-mode:screen;flex-shrink:0;" />
-  <div>
-    <div class="nav-title">OR Command Server Capacity Calculator</div>
-  </div>
-  <a class="nav-back" href="index.html">← Back to Reports</a>
-  <span class="nav-sub">Internal Use Only</span>
-</div>
-
-<div class="container-lg py-4" style="max-width:900px;">
-
-  <!-- Intro -->
-  <div style="background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.07);padding:1rem 1.25rem;margin-bottom:1.25rem;">
-    <div style="font-size:.95rem;font-weight:600;color:#1a2332;margin-bottom:.35rem;">How to use this tool</div>
-    <p style="font-size:.83rem;color:#4a5568;margin:0;line-height:1.7;">
-      Enter the number of each source type for the customer site and the calculator will recommend the minimum server CPU SKU.
-      Rates are pre-loaded from a 36-source, 4-day endurance test on a 16-core server - adjust the sliders to tune target utilization and headroom.
-      If you have your own test run data, expand <strong>Advanced - Recalibrate Rates</strong> to plug in your measured values.
-    </p>
-  </div>
-
-  <!-- Defaults info bar -->
-  <div style="background:#f0f4ff;border:1px solid #c8d4f8;border-radius:9px;padding:.6rem 1rem;margin-bottom:1.25rem;font-size:.78rem;color:#2c3e8a;display:flex;align-items:center;gap:.5rem;">
-    <span style="font-size:1rem;">&#9432;</span>
-    <span>Default rates measured from a 36-source, 4-day endurance test on a 16-core / 32 GB server (May 2026, overhead factor 1.526x). Hover any <strong>measured</strong> or <strong>estimated</strong> badge for details.</span>
-  </div>
-
-  <!-- Advanced: Recalibrate Rates -->
-  <div class="card-section">
-    <div class="section-header collapsed" id="calHdr" onclick="toggleSection('calBody','calHdr')">
-      <span>⚙️</span>
-      Advanced - Recalibrate Rates
-      <span style="font-weight:400;opacity:.75;font-size:.8rem;margin-left:.25rem;">- override with rates from your own test run</span>
-      <span class="chevron">&#9660;</span>
+  <!-- Nav -->
+  <div class="top-nav">
+    <img src="ArthrexLogo.png" alt="Arthrex"
+      style="height:52px;filter:invert(1);mix-blend-mode:screen;flex-shrink:0;" />
+    <div>
+      <div class="nav-title">OR Command Server Capacity Calculator</div>
     </div>
-    <div id="calBody" class="section-body" style="display:none;">
-      <p style="font-size:.82rem;color:#4a5568;margin-bottom:1rem;">
-        If you've run your own performance test, enter the measured values below.
-        Click <strong>Recalculate rates</strong> to update the calculator with your data.
-        Leave fields blank to keep the current default.
+    <a class="nav-back" href="index.html">← Back to Reports</a>
+    <span class="nav-sub">Internal Use Only</span>
+  </div>
+
+  <div class="container-lg py-4" style="max-width:900px;">
+
+    <!-- Intro -->
+    <div
+      style="background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.07);padding:1rem 1.25rem;margin-bottom:1.25rem;">
+      <div style="font-size:.95rem;font-weight:600;color:#1a2332;margin-bottom:.35rem;">How to use this tool</div>
+      <p style="font-size:.83rem;color:#4a5568;margin:0;line-height:1.7;">
+        Enter the number of each source type for the customer site and the calculator will recommend the minimum server
+        CPU SKU.
+        Rates are pre-loaded from a 36-source, 4-day endurance test on a 16-core server - adjust the sliders to tune
+        target utilization and headroom.
+        If you have your own test run data, expand <strong>Advanced - Recalibrate Rates</strong> to plug in your
+        measured values.
       </p>
-      <div class="cal-grid">
-        <div class="cal-field">
-          <label>Server cores</label>
-          <input type="number" id="calCores" min="1" max="512" placeholder="e.g. 16" />
-          <div class="hint">Total logical CPU cores on the test server</div>
-        </div>
-        <div class="cal-field">
-          <label>p99 total CPU (%)</label>
-          <input type="number" id="calP99" min="1" max="100" step="0.01" placeholder="e.g. 88.14" />
-          <div class="hint">From the server metrics chart in the report</div>
-        </div>
-        <div class="cal-field">
-          <label>Vision streams (RTSPS) — count</label>
-          <input type="number" id="calVisionCnt" min="0" max="500" placeholder="e.g. 6" />
-          <div class="hint">Number of Vision RTSPS sources in the test</div>
-        </div>
-        <div class="cal-field">
-          <label>Vision ffmpeg mean CPU (%)</label>
-          <input type="number" id="calVisionCpu" min="0" max="100" step="0.0001" placeholder="e.g. 3.425" />
-          <div class="hint">Avg % of total server CPU per Vision ffmpeg process</div>
-        </div>
-        <div class="cal-field">
-          <label>Sony/Axis streams — count</label>
-          <input type="number" id="calSonyCnt" min="0" max="500" placeholder="e.g. 4" />
-        </div>
-        <div class="cal-field">
-          <label>Sony/Axis ffmpeg mean CPU (%)</label>
-          <input type="number" id="calSonyCpu" min="0" max="100" step="0.0001" placeholder="e.g. 1.372" />
-          <div class="hint">Avg % of total server CPU per Sony/Axis ffmpeg process</div>
-        </div>
-        <div class="cal-field">
-          <label>UHD4 streams — count</label>
-          <input type="number" id="calUhd4Cnt" min="0" max="500" placeholder="e.g. 1" />
-        </div>
-        <div class="cal-field">
-          <label>UHD4 ffmpeg mean CPU (%)</label>
-          <input type="number" id="calUhd4Cpu" min="0" max="100" step="0.0001" placeholder="e.g. 0.28" />
-        </div>
-        <div class="cal-field">
-          <label>Simulated streams — count</label>
-          <input type="number" id="calSimCnt" min="0" max="500" placeholder="e.g. 24" />
-        </div>
-        <div class="cal-field">
-          <label>Simulated ffmpeg mean CPU (%)</label>
-          <input type="number" id="calSimCpu" min="0" max="100" step="0.0001" placeholder="e.g. 1.467" />
-        </div>
-      </div>
-      <button class="cal-derive-btn" onclick="deriveRates()">Recalculate rates from my data</button>
-      <div id="calDeriveResult" class="cal-derive-result"></div>
     </div>
-  </div>
 
-  <!-- Calculator -->
-  <div class="card-section">
-    <div class="section-header" id="calcHdr" onclick="toggleSection('calcBody','calcHdr')">
-      <span>🖩</span>
-      Source Mix Capacity Calculator
-      <span style="font-weight:400;opacity:.75;font-size:.8rem;margin-left:.25rem;">- enter your source counts to get a server recommendation</span>
-      <span class="chevron">&#9660;</span>
+    <!-- Defaults info bar -->
+    <div
+      style="background:#f0f4ff;border:1px solid #c8d4f8;border-radius:9px;padding:.6rem 1rem;margin-bottom:1.25rem;font-size:.78rem;color:#2c3e8a;display:flex;align-items:center;gap:.5rem;">
+      <span style="font-size:1rem;">&#9432;</span>
+      <span>Default rates measured from a 36-source, 4-day endurance test on a 16-core / 32 GB server (May 2026,
+        overhead factor 1.526x). Hover any <strong>measured</strong> or <strong>estimated</strong> badge for
+        details.</span>
     </div>
-    <div id="calcBody" class="section-body">
 
-      <!-- Source mix table -->
-      <div style="font-size:.75rem;font-weight:600;color:#8a93a2;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem;">
-        Enter your target source mix
+    <!-- Advanced: Recalibrate Rates -->
+    <div class="card-section">
+      <div class="section-header collapsed" id="calHdr" onclick="toggleSection('calBody','calHdr')">
+        <span>⚙️</span>
+        Advanced - Recalibrate Rates
+        <span style="font-weight:400;opacity:.75;font-size:.8rem;margin-left:.25rem;">- override with rates from your
+          own test run</span>
+        <span class="chevron">&#9660;</span>
       </div>
-      <div style="overflow-x:auto;">
-        <table class="cap-table">
-          <thead>
-            <tr>
-              <th style="text-align:left;">Source Type</th>
-              <th style="text-align:center;">Count</th>
-              <th style="text-align:center;">Cores / stream <span style="font-weight:400;opacity:.7;">(click to override)</span></th>
-              <th style="text-align:right;padding-right:14px;">Work cores</th>
-            </tr>
-          </thead>
-          <tbody id="capTypeRows"></tbody>
-          <tfoot>
-            <tr class="cap-total-row">
-              <td colspan="3" style="padding-left:12px;font-size:.83rem;color:#3a4a8a;">
-                Total &nbsp;<span style="font-weight:400;font-size:.74rem;color:#8a93a2;">
-                  (overhead factor embedded in each rate — calibrated to measured p99)
-                </span>
-              </td>
-              <td class="cap-total-val" id="capTotalWork">—</td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-
-      <!-- Sliders -->
-      <div class="cap-sliders">
-        <div class="cap-slider-group">
-          <span class="cap-slider-label">Target util:</span>
-          <input type="range" class="cap-slider" id="capUtil2" min="40" max="80" value="60"
-            oninput="capSliderUpdate(this,'capUtil2Val',40,80);capMixCalc()">
-          <span class="cap-slider-val" id="capUtil2Val">60%</span>
+      <div id="calBody" class="section-body" style="display:none;">
+        <p style="font-size:.82rem;color:#4a5568;margin-bottom:1rem;">
+          If you've run your own performance test, enter the measured values below.
+          Click <strong>Recalculate rates</strong> to update the calculator with your data.
+          Leave fields blank to keep the current default.
+        </p>
+        <div class="cal-grid">
+          <div class="cal-field">
+            <label>Server cores</label>
+            <input type="number" id="calCores" min="1" max="512" placeholder="e.g. 16" />
+            <div class="hint">Total logical CPU cores on the test server</div>
+          </div>
+          <div class="cal-field">
+            <label>p99 total CPU (%)</label>
+            <input type="number" id="calP99" min="1" max="100" step="0.01" placeholder="e.g. 88.14" />
+            <div class="hint">From the server metrics chart in the report</div>
+          </div>
+          <div class="cal-field">
+            <label>Vision streams (RTSPS) — count</label>
+            <input type="number" id="calVisionCnt" min="0" max="500" placeholder="e.g. 6" />
+            <div class="hint">Number of Vision RTSPS sources in the test</div>
+          </div>
+          <div class="cal-field">
+            <label>Vision ffmpeg mean CPU (%)</label>
+            <input type="number" id="calVisionCpu" min="0" max="100" step="0.0001" placeholder="e.g. 3.425" />
+            <div class="hint">Avg % of total server CPU per Vision ffmpeg process</div>
+          </div>
+          <div class="cal-field">
+            <label>Sony/Axis streams — count</label>
+            <input type="number" id="calSonyCnt" min="0" max="500" placeholder="e.g. 4" />
+          </div>
+          <div class="cal-field">
+            <label>Sony/Axis ffmpeg mean CPU (%)</label>
+            <input type="number" id="calSonyCpu" min="0" max="100" step="0.0001" placeholder="e.g. 1.372" />
+            <div class="hint">Avg % of total server CPU per Sony/Axis ffmpeg process</div>
+          </div>
+          <div class="cal-field">
+            <label>UHD4 streams — count</label>
+            <input type="number" id="calUhd4Cnt" min="0" max="500" placeholder="e.g. 1" />
+          </div>
+          <div class="cal-field">
+            <label>UHD4 ffmpeg mean CPU (%)</label>
+            <input type="number" id="calUhd4Cpu" min="0" max="100" step="0.0001" placeholder="e.g. 0.28" />
+          </div>
+          <div class="cal-field">
+            <label>Simulated streams — count</label>
+            <input type="number" id="calSimCnt" min="0" max="500" placeholder="e.g. 24" />
+          </div>
+          <div class="cal-field">
+            <label>Simulated ffmpeg mean CPU (%)</label>
+            <input type="number" id="calSimCpu" min="0" max="100" step="0.0001" placeholder="e.g. 1.467" />
+          </div>
         </div>
-        <div class="cap-slider-group">
-          <span class="cap-slider-label">Headroom:</span>
-          <input type="range" class="cap-slider" id="capHr2" min="0" max="50" value="20"
-            oninput="capSliderUpdate(this,'capHr2Val',0,50);capMixCalc()">
-          <span class="cap-slider-val" id="capHr2Val">20%</span>
-        </div>
-        <button class="cap-reset-btn" onclick="capMixReset()">Reset</button>
+        <button class="cal-derive-btn" onclick="deriveRates()">Recalculate rates from my data</button>
+        <div id="calDeriveResult" class="cal-derive-result"></div>
       </div>
-
-      <!-- Result -->
-      <div class="cap-result" id="capMixResult">Enter source counts above to see the recommendation.</div>
     </div>
-  </div>
 
-</div><!-- /container -->
+    <!-- Calculator -->
+    <div class="card-section">
+      <div class="section-header" id="calcHdr" onclick="toggleSection('calcBody','calcHdr')">
+        <span>🖩</span>
+        Source Mix Capacity Calculator
+        <span style="font-weight:400;opacity:.75;font-size:.8rem;margin-left:.25rem;">- enter your source counts to get
+          a server recommendation</span>
+        <span class="chevron">&#9660;</span>
+      </div>
+      <div id="calcBody" class="section-body">
 
-<footer>
-  Arthrex ORC Performance Tools &nbsp;·&nbsp; Internal use only — not for distribution
-</footer>
+        <!-- Source mix table -->
+        <div
+          style="font-size:.75rem;font-weight:600;color:#8a93a2;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem;">
+          Enter your target source mix
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="cap-table">
+            <thead>
+              <tr>
+                <th style="text-align:left;">Source Type</th>
+                <th style="text-align:center;">Count</th>
+                <th style="text-align:center;">Cores / stream <span style="font-weight:400;opacity:.7;">(click to
+                    override)</span></th>
+                <th style="text-align:right;padding-right:14px;">Work cores</th>
+              </tr>
+            </thead>
+            <tbody id="capTypeRows"></tbody>
+            <tfoot>
+              <tr class="cap-total-row">
+                <td colspan="3" style="padding-left:12px;font-size:.83rem;color:#3a4a8a;">
+                  Total &nbsp;<span style="font-weight:400;font-size:.74rem;color:#8a93a2;">
+                    (overhead factor embedded in each rate — calibrated to measured p99)
+                  </span>
+                </td>
+                <td class="cap-total-val" id="capTotalWork">—</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
 
-<script>
-// ─────────────────────────────────────────────────────────────────────────────
-// Defaults from 4-day endurance test on 16-core server (May 2026)
-//   p99 CPU: 93.9%  →  15.02 active cores
-//   Overhead factor: 1.526×  (ffmpeg processes → total server load)
-//   Mix tested: 6 Vision · 4 Sony/Axis · 1 UHD4 · 1 Matrix · 24 Simulated
-// ─────────────────────────────────────────────────────────────────────────────
-const DEFAULT_TYPES = [
-  { id:'vision', label:'Vision (RTSPS)',     color:'#7c3aed', rate:0.836, hasMeasured:true,
-    note:'Measured: 6 streams in reference run. Raw ffmpeg mean 0.5480 cores/stream × 1.526 overhead = 0.836 cores/stream.' },
-  { id:'sony',   label:'Sony / Axis Camera', color:'#0284c7', rate:0.335, hasMeasured:true,
-    note:'Measured: 4 streams in reference run. Raw ffmpeg mean 0.2196 cores/stream × 1.526 overhead = 0.335 cores/stream.' },
-  { id:'uhd4',   label:'UHD4 (4K RTSP)',     color:'#0d9488', rate:0.068, hasMeasured:true,
-    note:'Measured: 1 stream in reference run. Raw ffmpeg mean 0.0448 cores/stream × 1.526 overhead = 0.068 cores/stream.' },
-  { id:'matrix', label:'Matrix / RTMP',      color:'#dc6803', rate:0.358, hasMeasured:false,
-    note:'Not in reference run — using Simulated rate (0.358) as a conservative proxy. Override if you have measured data.' },
-  { id:'sim',    label:'Simulated',          color:'#4d6ef5', rate:0.358, hasMeasured:true,
-    note:'Measured: 24 streams in reference run. Raw ffmpeg mean 0.2347 cores/stream × 1.526 overhead = 0.358 cores/stream.' },
-];
+        <!-- Sliders -->
+        <div class="cap-sliders">
+          <div class="cap-slider-group">
+            <span class="cap-slider-label">Target util:</span>
+            <input type="range" class="cap-slider" id="capUtil2" min="40" max="80" value="60"
+              oninput="capSliderUpdate(this,'capUtil2Val',40,80);capMixCalc()">
+            <span class="cap-slider-val" id="capUtil2Val">60%</span>
+          </div>
+          <div class="cap-slider-group">
+            <span class="cap-slider-label">Headroom:</span>
+            <input type="range" class="cap-slider" id="capHr2" min="0" max="50" value="20"
+              oninput="capSliderUpdate(this,'capHr2Val',0,50);capMixCalc()">
+            <span class="cap-slider-val" id="capHr2Val">20%</span>
+          </div>
+          <button class="cap-reset-btn" onclick="capMixReset()">Reset</button>
+        </div>
 
-const CAP_SKUS    = [4, 8, 12, 16, 24, 32, 36, 48, 64, 96, 128, 192, 256];
-const CAP_DEF_CUR_CORES = 16;  // reference server core count
-const CAP_OVERHEAD_K    = 1.526;
+        <!-- Result -->
+        <div class="cap-result" id="capMixResult">Enter source counts above to see the recommendation.</div>
+      </div>
+    </div>
 
-let CAP_TYPES       = JSON.parse(JSON.stringify(DEFAULT_TYPES));  // mutable copy
-let CAP_CUR_CORES   = CAP_DEF_CUR_CORES;
-const CAP_DEF_COUNTS = { vision:6, sony:2, uhd4:0, matrix:0, sim:0 };  // typical customer mix pre-filled
-const _userRates     = {};
+    <!-- Network Egress Panel -->
+    <div class="card-section">
+      <div class="section-header" id="netHdr" onclick="toggleSection('netBody','netHdr')">
+        <span>📡</span>
+        Network Egress Check
+        <span style="font-weight:400;opacity:.75;font-size:.8rem;margin-left:.25rem;">- NIC bandwidth required for your source mix</span>
+        <span class="chevron">&#9660;</span>
+      </div>
+      <div id="netBody" class="section-body">
+        <p style="font-size:.84rem;color:#495670;margin:0 0 1rem;">
+          Estimated inbound bandwidth per source type (measured or estimated from reference runs).
+          Flag threshold: <strong>800 Mbps</strong> (practical limit of a 1 Gbps NIC). Above that, a 10 GbE NIC is recommended.
+        </p>
+        <div id="netResult" style="font-size:.88rem;color:#8a93a2;">Enter source counts in the calculator above to see network estimate.</div>
+      </div>
+    </div>
 
-// ── Section toggle ────────────────────────────────────────────────────────
-function toggleSection(bodyId, hdrId) {
-  const body = document.getElementById(bodyId);
-  const hdr  = document.getElementById(hdrId);
-  const open = body.style.display !== 'none';
-  body.style.display = open ? 'none' : '';
-  hdr.classList.toggle('collapsed', open);
-}
+    <!-- RAM Panel -->
+    <div class="card-section">
+      <div class="section-header" id="ramHdr" onclick="toggleSection('ramBody','ramHdr')">
+        <span>🧠</span>
+        RAM Check
+        <span style="font-weight:400;opacity:.75;font-size:.8rem;margin-left:.25rem;">- estimated working-set memory for your source mix</span>
+        <span class="chevron">&#9660;</span>
+      </div>
+      <div id="ramBody" class="section-body">
+        <p style="font-size:.84rem;color:#495670;margin:0 0 1rem;">
+          Per-stream ffmpeg working-set RAM (measured from reference runs).
+          Add a fixed base of <strong>~1 GB</strong> for ORC + SRS process overhead.
+          Flag threshold: <strong>80% of server RAM</strong>.
+        </p>
+        <div style="font-size:.8rem;color:#8a93a2;margin-bottom:.75rem;">
+          Enter server total RAM (GB) to check fit:&nbsp;
+          <input type="number" id="ramTotalGb" min="4" max="2048" value="16" step="4"
+            style="width:70px;padding:3px 6px;border:1px solid #d0d7e8;border-radius:6px;font-size:.85rem;"
+            oninput="updateSecondaryPanels()">
+          &nbsp;GB
+        </div>
+        <div id="ramResult" style="font-size:.88rem;color:#8a93a2;">Enter source counts in the calculator above to see RAM estimate.</div>
+      </div>
+    </div>
 
-// ── Slider ────────────────────────────────────────────────────────────────
-function capSliderUpdate(el, valId, min, max) {
-  const pct = (el.value - min) / (max - min) * 100;
-  el.style.setProperty('--pct', pct + '%');
-  document.getElementById(valId).textContent = el.value + '%';
-}
+  </div><!-- /container -->
 
-function _snapSku(n) {
-  for (const s of CAP_SKUS) { if (s >= n) return s; }
-  return Math.ceil(n / 4) * 4;
-}
+  <footer>
+    Arthrex ORC Performance Tools &nbsp;·&nbsp; Internal use only — not for distribution
+  </footer>
 
-// ── Rate cell HTML ─────────────────────────────────────────────────────────
-function _rateHtml(t) {
-  const r  = _userRates[t.id] !== undefined ? _userRates[t.id] : t.rate;
-  const ov = _userRates[t.id] !== undefined;
-  const badge = t.hasMeasured
-    ? `<span class='cap-badge measured'  title='${t.note}'>measured</span>`
-    : `<span class='cap-badge estimated' title='${t.note}'>estimated</span>`;
-  return `<div style='display:flex;align-items:center;gap:6px;justify-content:center;'>
+  <script>
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Defaults from 4-day endurance test on 16-core server (May 2026)
+    //   p99 CPU: 93.9%  →  15.02 active cores
+    //   Overhead factor: 1.526×  (ffmpeg processes → total server load)
+    //   Mix tested: 6 Vision · 4 Sony/Axis · 1 UHD4 · 1 Matrix · 24 Simulated
+    // ─────────────────────────────────────────────────────────────────────────────
+    const DEFAULT_TYPES = [
+      {
+        id: 'vision', label: 'Vision (RTSPS)', color: '#7c3aed', rate: 1.028, hasMeasured: true,
+        mbps: 8.1, ramMb: 80,
+        note: 'Measured: Vision-only boundary test (6 streams, qa162 16-core). Raw ffmpeg mean 0.4294 cores/stream × K_vision 2.394 (base-load corrected) = 1.028 cores/stream. Previous value 0.836 used mixed-run K=1.526 which underestimates RTSPS TLS overhead.'
+      },
+      {
+        id: 'sony', label: 'Sony / Axis Camera', color: '#0284c7', rate: 0.335, hasMeasured: true,
+        mbps: 4.0, ramMb: 73,
+        note: 'Measured: 4 streams in reference run. Raw ffmpeg mean 0.2196 cores/stream × 1.526 overhead = 0.335 cores/stream.'
+      },
+      {
+        id: 'uhd4', label: 'UHD4 (4K RTSP)', color: '#0d9488', rate: 0.068, hasMeasured: true,
+        mbps: 15.0, ramMb: 42,
+        note: 'Measured: 1 stream in reference run. Raw ffmpeg mean 0.0448 cores/stream × 1.526 overhead = 0.068 cores/stream.'
+      },
+      {
+        id: 'matrix', label: 'Matrix / RTMP', color: '#dc6803', rate: 0.358, hasMeasured: false,
+        mbps: 4.0, ramMb: 90,
+        note: 'Not in reference run — using Simulated rate (0.358) as a conservative proxy. Override if you have measured data.'
+      },
+      {
+        id: 'sim', label: 'Simulated', color: '#4d6ef5', rate: 0.358, hasMeasured: true,
+        mbps: 3.7, ramMb: 97,
+        note: 'Measured: 24 streams in reference run. Raw ffmpeg mean 0.2347 cores/stream × 1.526 overhead = 0.358 cores/stream.'
+      },
+    ];
+
+    const CAP_SKUS = [4, 8, 12, 16, 24, 32, 36, 48, 64, 96, 128, 192, 256];
+    const CAP_DEF_CUR_CORES = 16;  // reference server core count
+    const CAP_OVERHEAD_K = 1.526;
+
+    let CAP_TYPES = JSON.parse(JSON.stringify(DEFAULT_TYPES));  // mutable copy
+    let CAP_CUR_CORES = CAP_DEF_CUR_CORES;
+    const CAP_DEF_COUNTS = { vision: 6, sony: 2, uhd4: 0, matrix: 0, sim: 0 };  // typical customer mix pre-filled
+    const _userRates = {};
+
+    // ── Section toggle ────────────────────────────────────────────────────────
+    function toggleSection(bodyId, hdrId) {
+      const body = document.getElementById(bodyId);
+      const hdr = document.getElementById(hdrId);
+      const open = body.style.display !== 'none';
+      body.style.display = open ? 'none' : '';
+      hdr.classList.toggle('collapsed', open);
+    }
+
+    // ── Slider ────────────────────────────────────────────────────────────────
+    function capSliderUpdate(el, valId, min, max) {
+      const pct = (el.value - min) / (max - min) * 100;
+      el.style.setProperty('--pct', pct + '%');
+      document.getElementById(valId).textContent = el.value + '%';
+    }
+
+    function _snapSku(n) {
+      for (const s of CAP_SKUS) { if (s >= n) return s; }
+      return Math.ceil(n / 4) * 4;
+    }
+
+    // ── Rate cell HTML ─────────────────────────────────────────────────────────
+    function _rateHtml(t) {
+      const r = _userRates[t.id] !== undefined ? _userRates[t.id] : t.rate;
+      const ov = _userRates[t.id] !== undefined;
+      const badge = t.hasMeasured
+        ? `<span class='cap-badge measured'  title='${t.note}'>measured</span>`
+        : `<span class='cap-badge estimated' title='${t.note}'>estimated</span>`;
+      return `<div style='display:flex;align-items:center;gap:6px;justify-content:center;'>
     <input type='number' step='0.001' min='0.001' max='20' value='${r.toFixed(3)}'
-      class='cap-rate-input${ov?" overridden":""}'  title='${t.note}'
+      class='cap-rate-input${ov ? " overridden" : ""}'  title='${t.note}'
       onchange='_userRates["${t.id}"]=Math.max(0.001,parseFloat(this.value)||t.rate);
                 this.classList.toggle("overridden",true);capMixCalc()'>
     ${badge}
   </div>`;
-}
+    }
 
-// ── Build table rows ───────────────────────────────────────────────────────
-function capBuildRows() {
-  document.getElementById('capTypeRows').innerHTML = CAP_TYPES.map(t => `
+    // ── Build table rows ───────────────────────────────────────────────────────
+    function capBuildRows() {
+      document.getElementById('capTypeRows').innerHTML = CAP_TYPES.map(t => `
     <tr id='capRow_${t.id}'>
       <td style='padding:8px 12px;'>
         <span class='cap-type-dot' style='background:${t.color};'></span>
@@ -428,52 +809,52 @@ function capBuildRows() {
       <td style='padding:8px 12px;' id='capRateCell_${t.id}'>${_rateHtml(t)}</td>
       <td class='cap-work-cell' id='capWork_${t.id}'>—</td>
     </tr>`).join('');
-}
-
-// ── Main calculation ───────────────────────────────────────────────────────
-function capMixCalc() {
-  const util_pct = parseInt(document.getElementById('capUtil2').value);
-  const hr_pct   = parseInt(document.getElementById('capHr2').value);
-
-  let totalWork = 0;
-  const breakdown = [];
-  const unmeasuredActive = [];
-
-  for (const t of CAP_TYPES) {
-    const el    = document.getElementById('capCnt_' + t.id);
-    const count = el ? (parseInt(el.value) || 0) : 0;
-    const rate  = _userRates[t.id] !== undefined ? _userRates[t.id] : t.rate;
-    const work  = count * rate;
-    totalWork  += work;
-    const workEl = document.getElementById('capWork_' + t.id);
-    const rowEl  = document.getElementById('capRow_'  + t.id);
-    if (workEl) {
-      workEl.textContent = count > 0 ? work.toFixed(3) : '—';
-      workEl.classList.toggle('active', count > 0);
     }
-    if (rowEl) rowEl.classList.toggle('cap-row-active', count > 0);
-    if (count > 0) {
-      breakdown.push({ count, rate, work, color: t.color, label: t.label });
-      if (!t.hasMeasured && _userRates[t.id] === undefined) unmeasuredActive.push(t.label);
-    }
-  }
 
-  const tw = document.getElementById('capTotalWork');
-  if (tw) tw.textContent = totalWork > 0 ? totalWork.toFixed(3) + ' cores' : '—';
+    // ── Main calculation ───────────────────────────────────────────────────────
+    function capMixCalc() {
+      const util_pct = parseInt(document.getElementById('capUtil2').value);
+      const hr_pct = parseInt(document.getElementById('capHr2').value);
 
-  if (totalWork === 0) {
-    document.getElementById('capMixResult').innerHTML =
-      '<div style="color:#8a93a2;padding:.5rem 0;font-size:.84rem;">Enter source counts above to see the recommendation.</div>';
-    return;
-  }
+      let totalWork = 0;
+      const breakdown = [];
+      const unmeasuredActive = [];
 
-  const withHr = totalWork * (1 + hr_pct / 100);
-  const needed = withHr / (util_pct / 100);
-  const sku    = _snapSku(needed);
-  const ratio  = needed / CAP_CUR_CORES;
-  const isOk   = ratio <= 1.0;
+      for (const t of CAP_TYPES) {
+        const el = document.getElementById('capCnt_' + t.id);
+        const count = el ? (parseInt(el.value) || 0) : 0;
+        const rate = _userRates[t.id] !== undefined ? _userRates[t.id] : t.rate;
+        const work = count * rate;
+        totalWork += work;
+        const workEl = document.getElementById('capWork_' + t.id);
+        const rowEl = document.getElementById('capRow_' + t.id);
+        if (workEl) {
+          workEl.textContent = count > 0 ? work.toFixed(3) : '—';
+          workEl.classList.toggle('active', count > 0);
+        }
+        if (rowEl) rowEl.classList.toggle('cap-row-active', count > 0);
+        if (count > 0) {
+          breakdown.push({ count, rate, work, color: t.color, label: t.label });
+          if (!t.hasMeasured && _userRates[t.id] === undefined) unmeasuredActive.push(t.label);
+        }
+      }
 
-  const bdHtml = `<table style='border-collapse:collapse;width:100%;font-size:.8rem;'>
+      const tw = document.getElementById('capTotalWork');
+      if (tw) tw.textContent = totalWork > 0 ? totalWork.toFixed(3) + ' cores' : '—';
+
+      if (totalWork === 0) {
+        document.getElementById('capMixResult').innerHTML =
+          '<div style="color:#8a93a2;padding:.5rem 0;font-size:.84rem;">Enter source counts above to see the recommendation.</div>';
+        return;
+      }
+
+      const withHr = totalWork * (1 + hr_pct / 100);
+      const needed = withHr / (util_pct / 100);
+      const sku = _snapSku(needed);
+      const ratio = needed / CAP_CUR_CORES;
+      const isOk = ratio <= 1.0;
+
+      const bdHtml = `<table style='border-collapse:collapse;width:100%;font-size:.8rem;'>
     <thead>
       <tr style='font-size:.74rem;color:#8a93a2;border-bottom:1px solid #eef0f8;'>
         <th style='padding:3px 10px 3px 4px;font-weight:600;text-align:left;'>Source Type</th>
@@ -498,11 +879,11 @@ function capMixCalc() {
     </tfoot>
   </table>`;
 
-  const estNote = unmeasuredActive.length
-    ? `<div class='cap-est-warn'>⚠ No measured data for <strong>${unmeasuredActive.join(', ')}</strong>. Using Simulated rate as a conservative proxy — hover the badge for details.</div>`
-    : '';
+      const estNote = unmeasuredActive.length
+        ? `<div class='cap-est-warn'>⚠ No measured data for <strong>${unmeasuredActive.join(', ')}</strong>. Using Simulated rate as a conservative proxy — hover the badge for details.</div>`
+        : '';
 
-  document.getElementById('capMixResult').innerHTML = `
+      document.getElementById('capMixResult').innerHTML = `
     <div class='cap-result-steps'>
       <div class='cap-step-row'>
         <div class='cap-step-label'><span class='cap-step-num'>1</span>Source breakdown</div>
@@ -518,7 +899,7 @@ function capMixCalc() {
       <div class='cap-step-row'>
         <div class='cap-step-label'><span class='cap-step-num'>3</span>At ${util_pct}% utilization</div>
         <div class='cap-step-val'>
-          <code>${withHr.toFixed(3)} ÷ ${(util_pct/100).toFixed(2)} = ${needed.toFixed(2)} cores</code>
+          <code>${withHr.toFixed(3)} ÷ ${(util_pct / 100).toFixed(2)} = ${needed.toFixed(2)} cores</code>
           <span class='cap-step-hint'> ← keeps server comfortable, not pegged</span>
         </div>
       </div>
@@ -527,108 +908,202 @@ function capMixCalc() {
         <div class='cap-step-val'>
           <code>${needed.toFixed(2)} cores raw</code>
           &rarr; round up to standard SKU &rarr;
-          <strong style='font-size:1.05rem;color:${isOk?"#146c43":"#9b1c1c"};'>${sku} cores</strong>
+          <strong style='font-size:1.05rem;color:${isOk ? "#146c43" : "#9b1c1c"};'>${sku} cores</strong>
         </div>
       </div>
     </div>
-    <div class='cap-verdict ${isOk?"ok":"bad"}'>
+    <div class='cap-verdict ${isOk ? "ok" : "bad"}'>
       ${isOk
-        ? `✓ &nbsp;A <strong>${CAP_CUR_CORES}-core</strong> server (reference hardware) meets this specification`
-        : `✗ &nbsp;Reference ${CAP_CUR_CORES}-core server is undersized for this mix. Recommended minimum: <span class='cap-verdict-sku'>${sku} cores</span>`
-      }
+          ? `✓ &nbsp;A <strong>${CAP_CUR_CORES}-core</strong> server (reference hardware) meets this specification`
+          : `✗ &nbsp;Reference ${CAP_CUR_CORES}-core server is undersized for this mix. Recommended minimum: <span class='cap-verdict-sku'>${sku} cores</span>`
+        }
     </div>
     ${estNote}`;
-}
 
-// ── Reset ─────────────────────────────────────────────────────────────────
-function capMixReset() {
-  CAP_TYPES = JSON.parse(JSON.stringify(DEFAULT_TYPES));
-  CAP_CUR_CORES = CAP_DEF_CUR_CORES;
-  for (const k of Object.keys(_userRates)) delete _userRates[k];
-  capBuildRows();
-  const u = document.getElementById('capUtil2');
-  const h = document.getElementById('capHr2');
-  u.value = 60; capSliderUpdate(u, 'capUtil2Val', 40, 80);
-  h.value = 20; capSliderUpdate(h, 'capHr2Val',   0,  50);
-  capMixCalc();
-}
-
-// ── Derive rates from custom calibration inputs ───────────────────────────
-function deriveRates() {
-  const cores = parseFloat(document.getElementById('calCores').value);
-  const p99   = parseFloat(document.getElementById('calP99').value);
-
-  if (!cores || !p99) {
-    alert('Please enter at least Server cores and p99 CPU% to recalculate rates.');
-    return;
-  }
-
-  const p99Cores = (p99 / 100) * cores;
-
-  // Collect per-type raw ffmpeg means (CPU% of total / 100 * cores = cores per stream)
-  const types = [
-    { id:'vision', cnt: parseFloat(document.getElementById('calVisionCnt').value), cpu: parseFloat(document.getElementById('calVisionCpu').value) },
-    { id:'sony',   cnt: parseFloat(document.getElementById('calSonyCnt').value),   cpu: parseFloat(document.getElementById('calSonyCpu').value) },
-    { id:'uhd4',   cnt: parseFloat(document.getElementById('calUhd4Cnt').value),   cpu: parseFloat(document.getElementById('calUhd4Cpu').value) },
-    { id:'sim',    cnt: parseFloat(document.getElementById('calSimCnt').value),     cpu: parseFloat(document.getElementById('calSimCpu').value) },
-  ];
-
-  // Raw cores per stream = cpu_pct / 100 * total_cores
-  const rawMeans = {};
-  for (const t of types) {
-    if (t.cnt > 0 && t.cpu > 0) {
-      rawMeans[t.id] = (t.cpu / 100) * cores;
+      updateSecondaryPanels();
     }
-  }
 
-  // Overhead factor: p99_cores / sum(count * raw_mean)
-  let ffmpegModel = 0;
-  for (const t of types) {
-    if (rawMeans[t.id]) ffmpegModel += t.cnt * rawMeans[t.id];
-  }
+    // ── Network + RAM panels ──────────────────────────────────────────────────
+    function updateSecondaryPanels() {
+      let totalMbps = 0, totalRamMb = 0, anyCount = false;
+      const netRows = [], ramRows = [];
 
-  if (ffmpegModel === 0) {
-    alert('Please enter at least one type with both count and CPU% filled in.');
-    return;
-  }
+      for (const t of CAP_TYPES) {
+        const el = document.getElementById('capCnt_' + t.id);
+        const count = el ? (parseInt(el.value) || 0) : 0;
+        if (count === 0) continue;
+        anyCount = true;
+        const streamMbps = t.mbps * count;
+        const streamRam  = t.ramMb * count;
+        totalMbps  += streamMbps;
+        totalRamMb += streamRam;
+        netRows.push(`<tr>
+          <td style='padding:4px 10px 4px 4px;'><span style='display:inline-block;width:8px;height:8px;border-radius:50%;background:${t.color};margin-right:5px;vertical-align:middle;'></span>${t.label}</td>
+          <td style='padding:4px 10px;text-align:center;font-family:monospace;'>${count}</td>
+          <td style='padding:4px 10px;text-align:center;font-family:monospace;'>${t.mbps.toFixed(1)}</td>
+          <td style='padding:4px 4px 4px 10px;text-align:right;font-family:monospace;font-weight:600;'>${streamMbps.toFixed(1)}</td>
+        </tr>`);
+        ramRows.push(`<tr>
+          <td style='padding:4px 10px 4px 4px;'><span style='display:inline-block;width:8px;height:8px;border-radius:50%;background:${t.color};margin-right:5px;vertical-align:middle;'></span>${t.label}</td>
+          <td style='padding:4px 10px;text-align:center;font-family:monospace;'>${count}</td>
+          <td style='padding:4px 10px;text-align:center;font-family:monospace;'>${t.ramMb}</td>
+          <td style='padding:4px 4px 4px 10px;text-align:right;font-family:monospace;font-weight:600;'>${streamRam.toFixed(0)}</td>
+        </tr>`);
+      }
 
-  const overheadK = p99Cores / ffmpegModel;
-  const simRate   = rawMeans['sim'] ? rawMeans['sim'] * overheadK : DEFAULT_TYPES.find(t=>t.id==='sim').rate;
+      const netEl  = document.getElementById('netResult');
+      const ramEl  = document.getElementById('ramResult');
+      if (!anyCount) {
+        netEl.innerHTML = '<span style="color:#8a93a2;">Enter source counts in the calculator above to see network estimate.</span>';
+        ramEl.innerHTML = '<span style="color:#8a93a2;">Enter source counts in the calculator above to see RAM estimate.</span>';
+        return;
+      }
 
-  // Apply to CAP_TYPES
-  for (const t of CAP_TYPES) {
-    if (rawMeans[t.id]) {
-      const calRate = rawMeans[t.id] * overheadK;
-      t.rate = Math.round(calRate * 1000) / 1000;
-      t.hasMeasured = true;
-      t.note = `Custom: ${t.id} — raw mean ${rawMeans[t.id].toFixed(4)} cores × ${overheadK.toFixed(3)} overhead = ${t.rate.toFixed(3)} cores/stream.`;
-    } else {
-      t.rate = Math.round(simRate * 1000) / 1000;
-      t.hasMeasured = false;
-      t.note = `No ${t.id} data in your run — using Sim rate (${t.rate.toFixed(3)}) as proxy.`;
+      const NET_WARN = 800;
+      const netOver  = totalMbps >= NET_WARN;
+      const tableHdr = (col3) => `<table style='border-collapse:collapse;width:100%;font-size:.8rem;margin-bottom:.75rem;'>
+        <thead><tr style='font-size:.74rem;color:#8a93a2;border-bottom:1px solid #eef0f8;'>
+          <th style='padding:3px 10px 3px 4px;font-weight:600;text-align:left;'>Source Type</th>
+          <th style='padding:3px 10px;font-weight:600;text-align:center;'>Count</th>
+          <th style='padding:3px 10px;font-weight:600;text-align:center;'>${col3}</th>
+          <th style='padding:3px 4px 3px 10px;font-weight:600;text-align:right;'>Total</th>
+        </tr></thead><tbody>`;
+
+      netEl.innerHTML = tableHdr('Mbps / stream') + netRows.join('') +
+        `</tbody><tfoot><tr style='border-top:1px solid #dde3f8;'>
+          <td colspan='3' style='padding:5px 10px 4px 4px;font-weight:700;'>Total inbound</td>
+          <td style='padding:5px 4px 4px 10px;text-align:right;font-family:monospace;font-weight:700;color:${netOver ? "#9b1c1c" : "#146c43"};'>${totalMbps.toFixed(1)} Mbps</td>
+        </tr></tfoot></table>` +
+        (netOver
+          ? `<div style='background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:.6rem 1rem;font-size:.82rem;color:#9b1c1c;'>
+              ⚠ <strong>${totalMbps.toFixed(0)} Mbps</strong> exceeds 800 Mbps — a <strong>10 GbE NIC</strong> is recommended for this mix.
+             </div>`
+          : `<div style='background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:.6rem 1rem;font-size:.82rem;color:#166534;'>
+              ✓ <strong>${totalMbps.toFixed(0)} Mbps</strong> — within 1 GbE NIC capacity (${Math.round(totalMbps/800*100)}% of 800 Mbps practical limit).
+             </div>`);
+
+      const serverRamGb = parseFloat(document.getElementById('ramTotalGb').value) || 16;
+      const BASE_RAM_MB = 1024;
+      const totalWithBase = totalRamMb + BASE_RAM_MB;
+      const totalGb = totalWithBase / 1024;
+      const pct = totalWithBase / (serverRamGb * 1024) * 100;
+      const ramOver = pct >= 80;
+
+      ramEl.innerHTML = tableHdr('MB / stream') + ramRows.join('') +
+        `</tbody><tfoot>
+          <tr style='border-top:1px solid #dde3f8;'>
+            <td colspan='3' style='padding:5px 10px 4px 4px;font-weight:700;'>ffmpeg working set</td>
+            <td style='padding:5px 4px 4px 10px;text-align:right;font-family:monospace;font-weight:600;'>${totalRamMb.toFixed(0)} MB</td>
+          </tr>
+          <tr>
+            <td colspan='3' style='padding:2px 10px 4px 4px;color:#8a93a2;'>+ ORC / SRS base</td>
+            <td style='padding:2px 4px 4px 10px;text-align:right;font-family:monospace;color:#8a93a2;'>~1,024 MB</td>
+          </tr>
+          <tr style='border-top:1px solid #dde3f8;'>
+            <td colspan='3' style='padding:5px 10px 4px 4px;font-weight:700;'>Total estimated</td>
+            <td style='padding:5px 4px 4px 10px;text-align:right;font-family:monospace;font-weight:700;color:${ramOver ? "#9b1c1c" : "#146c43"};'>${totalGb.toFixed(2)} GB</td>
+          </tr>
+        </tfoot></table>` +
+        (ramOver
+          ? `<div style='background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:.6rem 1rem;font-size:.82rem;color:#9b1c1c;'>
+              ⚠ <strong>${totalGb.toFixed(1)} GB</strong> estimated RAM is ${Math.round(pct)}% of the ${serverRamGb} GB server — exceeds 80% threshold. Consider a server with more RAM or reduce stream count.
+             </div>`
+          : `<div style='background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:.6rem 1rem;font-size:.82rem;color:#166534;'>
+              ✓ <strong>${totalGb.toFixed(1)} GB</strong> estimated RAM — ${Math.round(pct)}% of ${serverRamGb} GB (${(serverRamGb - totalGb).toFixed(1)} GB free headroom).
+             </div>`);
     }
-  }
 
-  CAP_CUR_CORES = cores;
+    // ── Reset ─────────────────────────────────────────────────────────────────
+    function capMixReset() {
+      CAP_TYPES = JSON.parse(JSON.stringify(DEFAULT_TYPES));
+      CAP_CUR_CORES = CAP_DEF_CUR_CORES;
+      for (const k of Object.keys(_userRates)) delete _userRates[k];
+      capBuildRows();
+      const u = document.getElementById('capUtil2');
+      const h = document.getElementById('capHr2');
+      u.value = 60; capSliderUpdate(u, 'capUtil2Val', 40, 80);
+      h.value = 20; capSliderUpdate(h, 'capHr2Val', 0, 50);
+      capMixCalc();
+      updateSecondaryPanels();
+    }
 
-  // Clear user overrides and rebuild
-  for (const k of Object.keys(_userRates)) delete _userRates[k];
-  capBuildRows();
-  capMixCalc();
+    // ── Derive rates from custom calibration inputs ───────────────────────────
+    function deriveRates() {
+      const cores = parseFloat(document.getElementById('calCores').value);
+      const p99 = parseFloat(document.getElementById('calP99').value);
 
-  const res = document.getElementById('calDeriveResult');
-  res.style.display = 'block';
-  res.innerHTML = `✓ Rates recalculated — overhead factor <strong>${overheadK.toFixed(3)}×</strong>, reference server <strong>${cores} cores</strong>, p99 active cores <strong>${p99Cores.toFixed(2)}</strong>. Calculator updated.`;
-}
+      if (!cores || !p99) {
+        alert('Please enter at least Server cores and p99 CPU% to recalculate rates.');
+        return;
+      }
 
-// ── Init ──────────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  capBuildRows();
-  capSliderUpdate(document.getElementById('capUtil2'), 'capUtil2Val', 40, 80);
-  capSliderUpdate(document.getElementById('capHr2'),   'capHr2Val',   0, 50);
-  capMixCalc();
-});
-</script>
+      const p99Cores = (p99 / 100) * cores;
+
+      // Collect per-type raw ffmpeg means (CPU% of total / 100 * cores = cores per stream)
+      const types = [
+        { id: 'vision', cnt: parseFloat(document.getElementById('calVisionCnt').value), cpu: parseFloat(document.getElementById('calVisionCpu').value) },
+        { id: 'sony', cnt: parseFloat(document.getElementById('calSonyCnt').value), cpu: parseFloat(document.getElementById('calSonyCpu').value) },
+        { id: 'uhd4', cnt: parseFloat(document.getElementById('calUhd4Cnt').value), cpu: parseFloat(document.getElementById('calUhd4Cpu').value) },
+        { id: 'sim', cnt: parseFloat(document.getElementById('calSimCnt').value), cpu: parseFloat(document.getElementById('calSimCpu').value) },
+      ];
+
+      // Raw cores per stream = cpu_pct / 100 * total_cores
+      const rawMeans = {};
+      for (const t of types) {
+        if (t.cnt > 0 && t.cpu > 0) {
+          rawMeans[t.id] = (t.cpu / 100) * cores;
+        }
+      }
+
+      // Overhead factor: p99_cores / sum(count * raw_mean)
+      let ffmpegModel = 0;
+      for (const t of types) {
+        if (rawMeans[t.id]) ffmpegModel += t.cnt * rawMeans[t.id];
+      }
+
+      if (ffmpegModel === 0) {
+        alert('Please enter at least one type with both count and CPU% filled in.');
+        return;
+      }
+
+      const overheadK = p99Cores / ffmpegModel;
+      const simRate = rawMeans['sim'] ? rawMeans['sim'] * overheadK : DEFAULT_TYPES.find(t => t.id === 'sim').rate;
+
+      // Apply to CAP_TYPES
+      for (const t of CAP_TYPES) {
+        if (rawMeans[t.id]) {
+          const calRate = rawMeans[t.id] * overheadK;
+          t.rate = Math.round(calRate * 1000) / 1000;
+          t.hasMeasured = true;
+          t.note = `Custom: ${t.id} — raw mean ${rawMeans[t.id].toFixed(4)} cores × ${overheadK.toFixed(3)} overhead = ${t.rate.toFixed(3)} cores/stream.`;
+        } else {
+          t.rate = Math.round(simRate * 1000) / 1000;
+          t.hasMeasured = false;
+          t.note = `No ${t.id} data in your run — using Sim rate (${t.rate.toFixed(3)}) as proxy.`;
+        }
+      }
+
+      CAP_CUR_CORES = cores;
+
+      // Clear user overrides and rebuild
+      for (const k of Object.keys(_userRates)) delete _userRates[k];
+      capBuildRows();
+      capMixCalc();
+
+      const res = document.getElementById('calDeriveResult');
+      res.style.display = 'block';
+      res.innerHTML = `✓ Rates recalculated — overhead factor <strong>${overheadK.toFixed(3)}×</strong>, reference server <strong>${cores} cores</strong>, p99 active cores <strong>${p99Cores.toFixed(2)}</strong>. Calculator updated.`;
+    }
+
+    // ── Init ──────────────────────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      capBuildRows();
+      capSliderUpdate(document.getElementById('capUtil2'), 'capUtil2Val', 40, 80);
+      capSliderUpdate(document.getElementById('capHr2'), 'capHr2Val', 0, 50);
+      capMixCalc();
+    });
+  </script>
 
 </body>
+
 </html>
