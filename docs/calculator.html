@@ -538,10 +538,8 @@
     <!-- Advanced: Recalibrate Rates -->
     <div class="card-section">
       <div class="section-header collapsed" id="calHdr" onclick="toggleSection('calBody','calHdr')">
-        <span>⚙️</span>
-        Advanced - Recalibrate Rates
-        <span style="font-weight:400;opacity:.75;font-size:.8rem;margin-left:.25rem;">- override with rates from your
-          own test run</span>
+        Advanced: Recalibrate Rates
+        <span style="font-weight:400;opacity:.75;font-size:.8rem;margin-left:.25rem;">Override with rates from your own test run</span>
         <span class="chevron">&#9660;</span>
       </div>
       <div id="calBody" class="section-body" style="display:none;">
@@ -605,10 +603,8 @@
     <!-- Calculator -->
     <div class="card-section">
       <div class="section-header" id="calcHdr" onclick="toggleSection('calcBody','calcHdr')">
-        <span>🖩</span>
         Source Mix Capacity Calculator
-        <span style="font-weight:400;opacity:.75;font-size:.8rem;margin-left:.25rem;">- enter your source counts to get
-          a server recommendation</span>
+        <span style="font-weight:400;opacity:.75;font-size:.8rem;margin-left:.25rem;">Enter your source counts to get a server recommendation</span>
         <span class="chevron">&#9660;</span>
       </div>
       <div id="calcBody" class="section-body">
@@ -686,7 +682,7 @@
   </div><!-- /container -->
 
   <footer>
-    Arthrex ORC Performance Tools &nbsp;·&nbsp; Internal use only — not for distribution
+    Arthrex ORC Performance Tools | Internal use only
   </footer>
 
   <script>
@@ -876,10 +872,10 @@
   </table>`;
 
       const ghzNote = ghzScaled
-        ? `<div class='cap-est-warn' style='background:#f0eeff;border-color:#c4b5fd;color:#4c1d95;'>ℹ️ Rates scaled for <strong>${targetGHz.toFixed(2)} GHz</strong> target hardware &mdash; base rates (2.50 GHz reference) multiplied by <strong>&times;${ghzScale.toFixed(3)}</strong>. ${targetGHz < CAP_REF_GHZ ? 'Slower cores = more cores needed.' : 'Faster cores = fewer cores needed.'}</div>`
+        ? `<div class='cap-est-warn' style='background:#f0eeff;border-color:#c4b5fd;color:#4c1d95;'>Rates scaled for <strong>${targetGHz.toFixed(2)} GHz</strong> target hardware. Base rates (2.50 GHz reference) multiplied by <strong>&times;${ghzScale.toFixed(3)}</strong>. ${targetGHz < CAP_REF_GHZ ? 'Slower cores require more cores.' : 'Faster cores require fewer cores.'}</div>`
         : '';
       const estNote = unmeasuredActive.length
-        ? `<div class='cap-est-warn'>⚠ No measured data for <strong>${unmeasuredActive.join(', ')}</strong>. Using Simulated rate as a conservative proxy — hover the badge for details.</div>`
+        ? `<div class='cap-est-warn'>Note: No measured data for <strong>${unmeasuredActive.join(', ')}</strong>. Using Simulated rate as a conservative proxy. Hover the rate badge for details.</div>`
         : '';
 
       document.getElementById('capMixResult').innerHTML = `
@@ -913,8 +909,8 @@
     </div>
     <div class='cap-verdict ${isOk ? "ok" : "bad"}'>
       ${isOk
-          ? `✓ &nbsp;A <strong>${CAP_CUR_CORES}-core</strong> server (reference hardware) meets this specification`
-          : `✗ &nbsp;Reference ${CAP_CUR_CORES}-core server is undersized for this mix. Recommended minimum: <span class='cap-verdict-sku'>${sku} cores</span>`
+          ? `A <strong>${CAP_CUR_CORES}-core</strong> server (reference hardware) meets this specification`
+          : `Reference ${CAP_CUR_CORES}-core server is undersized for this mix. Recommended minimum: <span class='cap-verdict-sku'>${sku} cores</span>`
         }
     </div>
     ${ghzNote}
@@ -978,10 +974,10 @@
         </tr></tfoot></table></div>` +
         (netOver
           ? `<div class='cap-verdict bad' style='margin-top:.5rem;'>
-              ⚠ <strong>${totalMbps.toFixed(0)} Mbps</strong> exceeds 800 Mbps — a <strong>10 GbE NIC</strong> is recommended for this mix.
+              <strong>${totalMbps.toFixed(0)} Mbps</strong> exceeds 800 Mbps. A <strong>10 GbE NIC</strong> is recommended for this mix.
              </div>`
           : `<div class='cap-verdict ok' style='margin-top:.5rem;'>
-              ✓ <strong>${totalMbps.toFixed(0)} Mbps</strong> — within 1 GbE NIC capacity (${Math.round(totalMbps/800*100)}% of 800 Mbps practical limit).
+              <strong>${totalMbps.toFixed(0)} Mbps</strong> within 1 GbE NIC capacity (${Math.round(totalMbps/800*100)}% of 800 Mbps practical limit).
              </div>`);
 
       const serverRamGb = parseFloat(document.getElementById('ramTotalGb').value) || 16;
@@ -1009,10 +1005,10 @@
         </tfoot></table></div>` +
         (ramOver
           ? `<div class='cap-verdict bad' style='margin-top:.5rem;'>
-              ⚠ <strong>${totalGb.toFixed(1)} GB</strong> estimated RAM is ${Math.round(pct)}% of the ${serverRamGb} GB server — exceeds 80% threshold. Consider a server with more RAM or reduce stream count.
+              <strong>${totalGb.toFixed(1)} GB</strong> estimated RAM is ${Math.round(pct)}% of the ${serverRamGb} GB server. Exceeds 80% threshold. Consider a server with more RAM or reduce stream count.
              </div>`
           : `<div class='cap-verdict ok' style='margin-top:.5rem;'>
-              ✓ <strong>${totalGb.toFixed(1)} GB</strong> estimated RAM — ${Math.round(pct)}% of ${serverRamGb} GB (${(serverRamGb - totalGb).toFixed(1)} GB free headroom).
+              <strong>${totalGb.toFixed(1)} GB</strong> estimated RAM, ${Math.round(pct)}% of ${serverRamGb} GB (${(serverRamGb - totalGb).toFixed(1)} GB free headroom).
              </div>`);
     }
 
@@ -1094,7 +1090,7 @@
 
       const res = document.getElementById('calDeriveResult');
       res.style.display = 'block';
-      res.innerHTML = `✓ Rates recalculated — overhead factor <strong>${overheadK.toFixed(3)}×</strong>, reference server <strong>${cores} cores</strong>, p99 active cores <strong>${p99Cores.toFixed(2)}</strong>. Calculator updated.`;
+      res.innerHTML = `Rates recalculated. Overhead factor <strong>${overheadK.toFixed(3)}x</strong>, reference server <strong>${cores} cores</strong>, p99 active cores <strong>${p99Cores.toFixed(2)}</strong>.`;
     }
 
     // ── Init ──────────────────────────────────────────────────────────────────
