@@ -691,7 +691,8 @@
     // Calibration sources:
     //   Vision:  vision_only_boundary — 6 streams isolated (Jun 2026). ffmpeg method, K=2.394
     //   Sony:    camera_only_boundary — 4 streams isolated (Jun 2026). total-server p99 method
-    //   UHD4:    4-day endurance mixed run (May 2026) — 1 stream, not isolated
+    //   UHD4:    single sample from mixed endurance run (May 2026) — not isolated, too noisy
+    //            0.068 raw value discarded; using 0.335 conservative proxy pending isolated test
     //   Sim:     sim_24_k_boundary — 24 streams isolated (Jun 2026). total-server p99 − idle
     //            (84.26% − 9.01%) × 16 ÷ 24 = 0.502 cores/stream
     //   Matrix:  no isolated measurement — using Sim rate (0.502) as proxy
@@ -709,9 +710,9 @@
         note: 'Calibrated Jun 8 2026 (camera_only_boundary, 4 streams isolated, qa162 16-core @ 2.50 GHz). Isolated measurement yielded 0.030 cores/stream (H.264 relay, static scene, near noise floor). Published rate 0.335 retained as conservative proxy to account for active surgical video workloads where camera bitrate is substantially higher.'
       },
       {
-        id: 'uhd4', label: 'UHD4 (4K RTSP)', color: '#0d9488', rate: 0.068, hasMeasured: true,
+        id: 'uhd4', label: 'UHD4 (RTSP)', color: '#0d9488', rate: 0.335, hasMeasured: false,
         mbps: 15.0, ramMb: 42,
-        note: 'Measured: 1 stream in reference run. Raw ffmpeg mean 0.0448 cores/stream × 1.526 overhead = 0.068 cores/stream.'
+        note: 'Not reliably measured. Single sample (0.068) was taken from a mixed endurance run with 35 other sources — too much noise to trust. Rate set to 0.335 (conservative proxy, same as Sony/Axis) until an isolated UHD4 test is run.'
       },
       {
         id: 'matrix', label: 'Matrix / RTMP', color: '#dc6803', rate: 0.502, hasMeasured: false,
