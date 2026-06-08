@@ -658,6 +658,13 @@
             <span class="cap-slider-val" id="capHr2Val">20%</span>
           </div>
           <div class="cap-slider-group">
+            <span class="cap-slider-label" title="All rates are calibrated to the qa162 reference server (2.50 GHz). Enter your target server's core speed to automatically scale all rates.">Core speed:</span>
+            <input type="number" id="capTargetGHz" min="1.0" max="5.0" step="0.01" value="2.50"
+              style="width:68px;padding:2px 6px;border:1px solid #d0d7e8;border-radius:6px;font-size:.85rem;text-align:center;"
+              oninput="capMixCalc()">
+            <span class="cap-slider-val">GHz</span>
+          </div>
+          <div class="cap-slider-group">
             <span class="cap-slider-label">Server RAM:</span>
             <input type="number" id="ramTotalGb" min="4" max="2048" value="16" step="4"
               style="width:62px;padding:2px 6px;border:1px solid #d0d7e8;border-radius:6px;font-size:.85rem;text-align:center;"
@@ -735,6 +742,7 @@
     const CAP_SKUS = [4, 8, 12, 16, 24, 32, 36, 48, 64, 96, 128, 192, 256];
     const CAP_DEF_CUR_CORES = 16;  // reference server core count
     const CAP_OVERHEAD_K = 1.526;
+    const CAP_REF_GHZ = 2.50;      // qa162 reference hardware clock speed
 
     let CAP_TYPES = JSON.parse(JSON.stringify(DEFAULT_TYPES));  // mutable copy
     let CAP_CUR_CORES = CAP_DEF_CUR_CORES;
@@ -799,6 +807,9 @@
     function capMixCalc() {
       const util_pct = parseInt(document.getElementById('capUtil2').value);
       const hr_pct = parseInt(document.getElementById('capHr2').value);
+      const targetGHz = parseFloat(document.getElementById('capTargetGHz').value) || CAP_REF_GHZ;
+      const ghzScale = CAP_REF_GHZ / targetGHz;
+      const ghzScaled = Math.abs(targetGHz - CAP_REF_GHZ) > 0.005;
 
       let totalWork = 0;
       const breakdown = [];
@@ -807,7 +818,8 @@
       for (const t of CAP_TYPES) {
         const el = document.getElementById('capCnt_' + t.id);
         const count = el ? (parseInt(el.value) || 0) : 0;
-        const rate = _userRates[t.id] !== undefined ? _userRates[t.id] : t.rate;
+        const baseRate = _userRates[t.id] !== undefined ? _userRates[t.id] : t.rate;
+        const rate = baseRate * ghzScale;
         const work = count * rate;
         totalWork += work;
         const workEl = document.getElementById('capWork_' + t.id);
@@ -851,7 +863,7 @@
       ${breakdown.map(b => `<tr>
         <td style='padding:4px 10px 4px 4px;'><span style='display:inline-block;width:8px;height:8px;border-radius:50%;background:${b.color};margin-right:5px;vertical-align:middle;'></span>${b.label}</td>
         <td style='padding:4px 10px;text-align:center;font-family:monospace;'>${b.count}</td>
-        <td style='padding:4px 10px;text-align:center;font-family:monospace;'>${b.rate.toFixed(3)}</td>
+        <td style='padding:4px 10px;text-align:center;font-family:monospace;'>${b.rate.toFixed(3)}${ghzScaled ? `<span style='font-size:.7rem;color:#7c3aed;margin-left:3px;' title='Base rate ${(b.rate/ghzScale).toFixed(3)} × ${ghzScale.toFixed(3)} GHz scale'>scaled</span>` : ''}</td>
         <td style='padding:4px 4px 4px 10px;text-align:right;font-family:monospace;font-weight:600;'>${b.work.toFixed(3)}</td>
       </tr>`).join('')}
     </tbody>
@@ -863,6 +875,9 @@
     </tfoot>
   </table>`;
 
+      const ghzNote = ghzScaled
+        ? `<div class='cap-est-warn' style='background:#f0eeff;border-color:#c4b5fd;color:#4c1d95;'>ℹ️ Rates scaled for <strong>${targetGHz.toFixed(2)} GHz</strong> target hardware &mdash; base rates (2.50 GHz reference) multiplied by <strong>&times;${ghzScale.toFixed(3)}</strong>. ${targetGHz < CAP_REF_GHZ ? 'Slower cores = more cores needed.' : 'Faster cores = fewer cores needed.'}</div>`
+        : '';
       const estNote = unmeasuredActive.length
         ? `<div class='cap-est-warn'>⚠ No measured data for <strong>${unmeasuredActive.join(', ')}</strong>. Using Simulated rate as a conservative proxy — hover the badge for details.</div>`
         : '';
@@ -902,6 +917,7 @@
           : `✗ &nbsp;Reference ${CAP_CUR_CORES}-core server is undersized for this mix. Recommended minimum: <span class='cap-verdict-sku'>${sku} cores</span>`
         }
     </div>
+    ${ghzNote}
     ${estNote}`;
 
       updateSecondaryPanels();
