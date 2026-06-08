@@ -149,13 +149,14 @@ def parse_args():
     )
     parser.add_argument(
         "--setup-sources",
-        choices=["vision", "simulated", "mixed"],
+        choices=["vision", "simulated", "mixed", "cameras"],
         default=None,
         help=(
             "Configure room sources and exit without running any scenario. "
             "'vision' = OR 01-06 with Vision RTSPS streams; "
             "'simulated' = OR 01-12 with simulated RTSP streams; "
-            "'mixed' = OR 01-04 Vision + OR 05-08 simulated."
+            "'mixed' = OR 01-04 Vision + OR 05-08 simulated; "
+            "'cameras' = OR 01-N with physical Sony/Axis cameras only (up to 4)."
         ),
     )
     parser.add_argument(
@@ -1135,7 +1136,8 @@ def run_endurance_test(pw, args) -> dict:
     duration_s = _parse_duration(getattr(args, "duration", "4h"))
     layout = getattr(args, "layout", "12")
     # Default to server's max stream tier so qa162 (36) and qa155 (12) are correct automatically
-    n_sources = getattr(args, "sources", None) or ACTIVE_ENV.get("stream_tiers", [12])[-1]
+    _src = getattr(args, "sources", None)
+    n_sources = ACTIVE_ENV.get("stream_tiers", [12])[-1] if _src is None else _src
     print(
         f"  [endurance_test] Duration: {duration_s}s "
         f"({getattr(args, 'duration', '4h')}), layout={layout}, sources={n_sources}"
@@ -1740,7 +1742,12 @@ def main():
 
     # --setup-sources: configure room sources and exit without running scenarios.
     if args.setup_sources:
-        n_sources_setup = getattr(args, "sources", None) or ACTIVE_ENV.get("stream_tiers", [12])[-1]
+        _src_setup = getattr(args, "sources", None)
+        n_sources_setup = ACTIVE_ENV.get("stream_tiers", [12])[-1] if _src_setup is None else _src_setup
+        if n_sources_setup == 0:
+            print("  [setup-sources] sources=0 — no rooms to create or configure.")
+            print("  [setup-sources] Done.")
+            sys.exit(0)
         if args.setup_sources == "vision":
             room_sources = [
                 {"room_name": f"OR {i+1:02d}", "source": _as_setup_source(VISION[i]), "make_primary": True}
@@ -1750,6 +1757,12 @@ def main():
             room_sources = [
                 {"room_name": f"OR {i+1:02d}", "source": _as_setup_source(SIMULATED[i % len(SIMULATED)]), "make_primary": True}
                 for i in range(n_sources_setup)
+            ]
+        elif args.setup_sources == "cameras":
+            n_cams = min(len(_PHYSICAL_CAMERAS), n_sources_setup)
+            room_sources = [
+                {"room_name": f"OR {i+1:02d}", "source": _as_setup_source(_PHYSICAL_CAMERAS[i]), "make_primary": True}
+                for i in range(n_cams)
             ]
         else:  # mixed — identical to _build_room_sources used by endurance test
             room_sources = _build_room_sources(n_sources_setup)

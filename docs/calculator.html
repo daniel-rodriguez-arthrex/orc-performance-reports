@@ -684,16 +684,31 @@
 
   <script>
     // ─────────────────────────────────────────────────────────────────────────────
-    // Defaults from 4-day endurance test on 16-core server (May 2026)
-    //   p99 CPU: 93.9%  →  15.02 active cores
+    // Reference hardware: orc-qa-162 — 16 vCPU VM @ 2.50 GHz fixed (Windows Server)
+    //   Virtual machine: Yes | Sockets: 8 | Virtual processors: 16 | No boost/throttle
+    //
+    // ⚠ All rates are calibrated to this hardware. For servers with different per-core
+    //   speed, apply: adjusted_rate = rate × (2.50 ÷ target_GHz)
+    //   Example: 3.0 GHz target → Vision 1.028 × (2.50 ÷ 3.0) = 0.857 cores/stream
+    //
+    // Idle baseline: qa162_cbase_idle_baseline_4h — clean p99 9.01%, avg 2.32%
+    //   (78 min, no streams, ORC + SRS + Greengrass running)
+    //   All isolated rates below subtract this idle floor before dividing by stream count.
+    //
+    // Calibration sources:
+    //   Vision:  vision_only_boundary — 6 streams isolated (Jun 2026). ffmpeg method, K=2.394
+    //   Sony:    camera_only_boundary — 4 streams isolated (Jun 2026). total-server p99 method
+    //   UHD4:    4-day endurance mixed run (May 2026) — 1 stream, not isolated
+    //   Sim:     sim_24_k_boundary — 24 streams isolated (Jun 2026). total-server p99 − idle
+    //            (84.26% − 9.01%) × 16 ÷ 24 = 0.502 cores/stream
+    //   Matrix:  no isolated measurement — using Sim rate (0.502) as proxy
     //   Overhead factor: 1.526×  (ffmpeg processes → total server load)
-    //   Mix tested: 6 Vision · 4 Sony/Axis · 1 UHD4 · 1 Matrix · 24 Simulated
     // ─────────────────────────────────────────────────────────────────────────────
     const DEFAULT_TYPES = [
       {
         id: 'vision', label: 'Vision (RTSPS)', color: '#7c3aed', rate: 1.028, hasMeasured: true,
         mbps: 8.1, ramMb: 80,
-        note: 'Measured: Vision-only boundary test (6 streams, qa162 16-core). Raw ffmpeg mean 0.4294 cores/stream × K_vision 2.394 (base-load corrected) = 1.028 cores/stream. Previous value 0.836 used mixed-run K=1.526 which underestimates RTSPS TLS overhead.'
+        note: 'Measured: vision_only_boundary — 6 streams isolated, qa162 16-core (Jun 2026). Method: ffmpeg-level mean 0.4294 cores/stream × K_vision 2.394 = 1.028 cores/stream. K_vision assumed ~10.09% idle floor. Corroborated by qa162_cbase_idle_baseline_4h (clean p99 = 9.01%) — consistent total-server method yields 1.057, within 3% of 1.028. No SKU impact. Rate considered validated.'
       },
       {
         id: 'sony', label: 'Sony / Axis Camera', color: '#0284c7', rate: 0.335, hasMeasured: true,
@@ -706,14 +721,14 @@
         note: 'Measured: 1 stream in reference run. Raw ffmpeg mean 0.0448 cores/stream × 1.526 overhead = 0.068 cores/stream.'
       },
       {
-        id: 'matrix', label: 'Matrix / RTMP', color: '#dc6803', rate: 0.358, hasMeasured: false,
+        id: 'matrix', label: 'Matrix / RTMP', color: '#dc6803', rate: 0.502, hasMeasured: false,
         mbps: 4.0, ramMb: 90,
-        note: 'Not in reference run — using Simulated rate (0.358) as a conservative proxy. Override if you have measured data.'
+        note: 'Not directly measured — using Simulated baseline-corrected rate (0.502) as a proxy. Override if you have isolated Matrix measurements.'
       },
       {
-        id: 'sim', label: 'Simulated', color: '#4d6ef5', rate: 0.358, hasMeasured: true,
+        id: 'sim', label: 'Simulated', color: '#4d6ef5', rate: 0.502, hasMeasured: true,
         mbps: 3.7, ramMb: 97,
-        note: 'Measured: 24 streams in reference run. Raw ffmpeg mean 0.2347 cores/stream × 1.526 overhead = 0.358 cores/stream.'
+        note: 'Measured: sim_24_k_boundary — 24-stream isolated test, qa162 16-core (Jun 2026). Method: total-server p99 84.26% minus idle baseline p99 9.01% (qa162_cbase_idle_baseline_4h, 78 min clean window) × 16 cores ÷ 24 streams = 0.502 cores/stream. Retest at 20 streams pending to confirm without CPU contention (peak was 99.2%).'
       },
     ];
 
@@ -896,6 +911,7 @@
     function updateSecondaryPanels() {
       let totalMbps = 0, totalRamMb = 0, anyCount = false;
       const netRows = [], ramRows = [];
+      const dot = (color) => `<span style='display:inline-block;width:8px;height:8px;border-radius:50%;background:${color};margin-right:5px;vertical-align:middle;'></span>`;
 
       for (const t of CAP_TYPES) {
         const el = document.getElementById('capCnt_' + t.id);
@@ -907,16 +923,16 @@
         totalMbps  += streamMbps;
         totalRamMb += streamRam;
         netRows.push(`<tr>
-          <td style='padding:4px 10px 4px 4px;'><span style='display:inline-block;width:8px;height:8px;border-radius:50%;background:${t.color};margin-right:5px;vertical-align:middle;'></span>${t.label}</td>
-          <td style='padding:4px 10px;text-align:center;font-family:monospace;'>${count}</td>
-          <td style='padding:4px 10px;text-align:center;font-family:monospace;'>${t.mbps.toFixed(1)}</td>
-          <td style='padding:4px 4px 4px 10px;text-align:right;font-family:monospace;font-weight:600;'>${streamMbps.toFixed(1)}</td>
+          <td>${dot(t.color)}${t.label}</td>
+          <td style='text-align:center;font-family:monospace;'>${count}</td>
+          <td style='text-align:center;font-family:monospace;'>${t.mbps.toFixed(1)}</td>
+          <td style='text-align:right;font-family:monospace;font-weight:600;padding-right:14px;'>${streamMbps.toFixed(1)}</td>
         </tr>`);
         ramRows.push(`<tr>
-          <td style='padding:4px 10px 4px 4px;'><span style='display:inline-block;width:8px;height:8px;border-radius:50%;background:${t.color};margin-right:5px;vertical-align:middle;'></span>${t.label}</td>
-          <td style='padding:4px 10px;text-align:center;font-family:monospace;'>${count}</td>
-          <td style='padding:4px 10px;text-align:center;font-family:monospace;'>${t.ramMb}</td>
-          <td style='padding:4px 4px 4px 10px;text-align:right;font-family:monospace;font-weight:600;'>${streamRam.toFixed(0)}</td>
+          <td>${dot(t.color)}${t.label}</td>
+          <td style='text-align:center;font-family:monospace;'>${count}</td>
+          <td style='text-align:center;font-family:monospace;'>${t.ramMb}</td>
+          <td style='text-align:right;font-family:monospace;font-weight:600;padding-right:14px;'>${streamRam.toFixed(0)}</td>
         </tr>`);
       }
 
@@ -930,25 +946,25 @@
 
       const NET_WARN = 800;
       const netOver  = totalMbps >= NET_WARN;
-      const tableHdr = (col3) => `<table style='border-collapse:collapse;width:100%;font-size:.8rem;margin-bottom:.75rem;'>
-        <thead><tr style='font-size:.74rem;color:#8a93a2;border-bottom:1px solid #eef0f8;'>
-          <th style='padding:3px 10px 3px 4px;font-weight:600;text-align:left;'>Source Type</th>
-          <th style='padding:3px 10px;font-weight:600;text-align:center;'>Count</th>
-          <th style='padding:3px 10px;font-weight:600;text-align:center;'>${col3}</th>
-          <th style='padding:3px 4px 3px 10px;font-weight:600;text-align:right;'>Total</th>
+      const tableHdr = (col3) => `<div style="overflow-x:auto;"><table class="cap-table">
+        <thead><tr>
+          <th style="text-align:left;">Source Type</th>
+          <th style="text-align:center;">Count</th>
+          <th style="text-align:center;">${col3}</th>
+          <th style="text-align:right;padding-right:14px;">Total</th>
         </tr></thead><tbody>`;
 
-      netEl.innerHTML = `<div style="font-size:.8rem;font-weight:700;color:#1e2d45;margin-bottom:.5rem;">Network Egress</div>` +
+      netEl.innerHTML = `<div style="font-size:.75rem;font-weight:600;color:#8a93a2;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem;">Network Egress</div>` +
         tableHdr('Mbps / stream') + netRows.join('') +
-        `</tbody><tfoot><tr style='border-top:1px solid #dde3f8;'>
-          <td colspan='3' style='padding:5px 10px 4px 4px;font-weight:700;'>Total inbound</td>
-          <td style='padding:5px 4px 4px 10px;text-align:right;font-family:monospace;font-weight:700;color:${netOver ? "#9b1c1c" : "#146c43"};'>${totalMbps.toFixed(1)} Mbps</td>
-        </tr></tfoot></table>` +
+        `</tbody><tfoot><tr class="cap-total-row">
+          <td colspan="3">Total inbound</td>
+          <td style="text-align:right;font-family:monospace;color:${netOver ? "#9b1c1c" : "#146c43"};padding-right:14px;">${totalMbps.toFixed(1)} Mbps</td>
+        </tr></tfoot></table></div>` +
         (netOver
-          ? `<div style='background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:.6rem 1rem;font-size:.82rem;color:#9b1c1c;'>
+          ? `<div class='cap-verdict bad' style='margin-top:.5rem;'>
               ⚠ <strong>${totalMbps.toFixed(0)} Mbps</strong> exceeds 800 Mbps — a <strong>10 GbE NIC</strong> is recommended for this mix.
              </div>`
-          : `<div style='background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:.6rem 1rem;font-size:.82rem;color:#166534;'>
+          : `<div class='cap-verdict ok' style='margin-top:.5rem;'>
               ✓ <strong>${totalMbps.toFixed(0)} Mbps</strong> — within 1 GbE NIC capacity (${Math.round(totalMbps/800*100)}% of 800 Mbps practical limit).
              </div>`);
 
@@ -959,27 +975,27 @@
       const pct = totalWithBase / (serverRamGb * 1024) * 100;
       const ramOver = pct >= 80;
 
-      ramEl.innerHTML = `<div style="font-size:.8rem;font-weight:700;color:#1e2d45;margin-bottom:.5rem;">RAM Estimate</div>` +
+      ramEl.innerHTML = `<div style="font-size:.75rem;font-weight:600;color:#8a93a2;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem;">RAM Estimate</div>` +
         tableHdr('MB / stream') + ramRows.join('') +
         `</tbody><tfoot>
-          <tr style='border-top:1px solid #dde3f8;'>
-            <td colspan='3' style='padding:5px 10px 4px 4px;font-weight:700;'>ffmpeg working set</td>
-            <td style='padding:5px 4px 4px 10px;text-align:right;font-family:monospace;font-weight:600;'>${totalRamMb.toFixed(0)} MB</td>
+          <tr class="cap-total-row">
+            <td colspan="3">ffmpeg working set</td>
+            <td style="text-align:right;font-family:monospace;padding-right:14px;">${totalRamMb.toFixed(0)} MB</td>
           </tr>
-          <tr>
-            <td colspan='3' style='padding:2px 10px 4px 4px;color:#8a93a2;'>+ ORC / SRS base</td>
-            <td style='padding:2px 4px 4px 10px;text-align:right;font-family:monospace;color:#8a93a2;'>~1,024 MB</td>
+          <tr class="cap-total-row" style="font-weight:400;color:#8a93a2;">
+            <td colspan="3">+ ORC / SRS base</td>
+            <td style="text-align:right;font-family:monospace;padding-right:14px;">~1,024 MB</td>
           </tr>
-          <tr style='border-top:1px solid #dde3f8;'>
-            <td colspan='3' style='padding:5px 10px 4px 4px;font-weight:700;'>Total estimated</td>
-            <td style='padding:5px 4px 4px 10px;text-align:right;font-family:monospace;font-weight:700;color:${ramOver ? "#9b1c1c" : "#146c43"};'>${totalGb.toFixed(2)} GB</td>
+          <tr class="cap-total-row">
+            <td colspan="3">Total estimated</td>
+            <td style="text-align:right;font-family:monospace;color:${ramOver ? "#9b1c1c" : "#146c43"};padding-right:14px;">${totalGb.toFixed(2)} GB</td>
           </tr>
-        </tfoot></table>` +
+        </tfoot></table></div>` +
         (ramOver
-          ? `<div style='background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:.6rem 1rem;font-size:.82rem;color:#9b1c1c;'>
+          ? `<div class='cap-verdict bad' style='margin-top:.5rem;'>
               ⚠ <strong>${totalGb.toFixed(1)} GB</strong> estimated RAM is ${Math.round(pct)}% of the ${serverRamGb} GB server — exceeds 80% threshold. Consider a server with more RAM or reduce stream count.
              </div>`
-          : `<div style='background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:.6rem 1rem;font-size:.82rem;color:#166534;'>
+          : `<div class='cap-verdict ok' style='margin-top:.5rem;'>
               ✓ <strong>${totalGb.toFixed(1)} GB</strong> estimated RAM — ${Math.round(pct)}% of ${serverRamGb} GB (${(serverRamGb - totalGb).toFixed(1)} GB free headroom).
              </div>`);
     }
