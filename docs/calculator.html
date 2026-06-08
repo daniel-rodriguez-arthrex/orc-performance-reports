@@ -519,20 +519,10 @@
       <p style="font-size:.83rem;color:#4a5568;margin:0;line-height:1.7;">
         Enter the number of each source type for the customer site and the calculator will recommend the minimum server
         CPU SKU.
-        Rates are pre-loaded from a 36-source, 4-day endurance test on a 16-core server - adjust the sliders to tune
-        target utilization and headroom.
-        If you have your own test run data, expand <strong>Advanced - Recalibrate Rates</strong> to plug in your
-        measured values.
+        Rates are pre-loaded from isolated boundary tests on the reference server (orc-qa-162, 16-core @ 2.50 GHz, Jun 2026) and corrected against a clean idle baseline.
+        Adjust the sliders to tune target utilization and headroom, or enter a different core speed to scale rates for your hardware.
+        If you have your own test run data, expand <strong>Advanced: Recalibrate Rates</strong> to plug in your measured values.
       </p>
-    </div>
-
-    <!-- Defaults info bar -->
-    <div
-      style="background:#f0f4ff;border:1px solid #c8d4f8;border-radius:9px;padding:.6rem 1rem;margin-bottom:1.25rem;font-size:.78rem;color:#2c3e8a;display:flex;align-items:center;gap:.5rem;">
-      <span style="font-size:1rem;">&#9432;</span>
-      <span>Default rates measured from a 36-source, 4-day endurance test on a 16-core / 32 GB server (May 2026,
-        overhead factor 1.526x). Hover any <strong>measured</strong> or <strong>estimated</strong> badge for
-        details.</span>
     </div>
 
     <!-- Advanced: Recalibrate Rates -->
@@ -662,7 +652,7 @@
           </div>
           <div class="cap-slider-group">
             <span class="cap-slider-label">Server RAM:</span>
-            <input type="number" id="ramTotalGb" min="4" max="2048" value="16" step="4"
+            <input type="number" id="ramTotalGb" min="4" max="2048" value="32" step="4"
               style="width:62px;padding:2px 6px;border:1px solid #d0d7e8;border-radius:6px;font-size:.85rem;text-align:center;"
               oninput="capMixCalc()">
             <span class="cap-slider-val">GB</span>
@@ -716,7 +706,7 @@
       {
         id: 'sony', label: 'Sony / Axis Camera', color: '#0284c7', rate: 0.335, hasMeasured: true,
         mbps: 4.0, ramMb: 73,
-        note: 'Measured: 4 streams in reference run. Raw ffmpeg mean 0.2196 cores/stream × 1.526 overhead = 0.335 cores/stream.'
+        note: 'Calibrated Jun 8 2026 (camera_only_boundary, 4 streams isolated, qa162 16-core @ 2.50 GHz). Isolated measurement yielded 0.030 cores/stream (H.264 relay, static scene, near noise floor). Published rate 0.335 retained as conservative proxy to account for active surgical video workloads where camera bitrate is substantially higher.'
       },
       {
         id: 'uhd4', label: 'UHD4 (4K RTSP)', color: '#0d9488', rate: 0.068, hasMeasured: true,
