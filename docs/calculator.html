@@ -517,77 +517,9 @@
       style="background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.07);padding:1rem 1.25rem;margin-bottom:1.25rem;">
       <div style="font-size:.95rem;font-weight:600;color:#1a2332;margin-bottom:.35rem;">How to use this tool</div>
       <p style="font-size:.83rem;color:#4a5568;margin:0;line-height:1.7;">
-        Enter the number of each source type for the customer site and the calculator will recommend the minimum server
-        CPU SKU.
-        Rates are pre-loaded from isolated boundary tests on the reference server (orc-qa-162, 16-core @ 2.50 GHz, Jun 2026) and corrected against a clean idle baseline.
-        Adjust the sliders to tune target utilization and headroom, or enter a different core speed to scale rates for your hardware.
-        If you have your own test run data, expand <strong>Advanced: Recalibrate Rates</strong> to plug in your measured values.
+        Enter the number of each source type in the table below to get a minimum CPU SKU recommendation. Use the sliders to adjust utilization, headroom, and core speed for your target hardware.
+        Have your own test data? Expand <strong>Advanced: Recalibrate Rates</strong> to override the defaults.
       </p>
-    </div>
-
-    <!-- Advanced: Recalibrate Rates -->
-    <div class="card-section">
-      <div class="section-header collapsed" id="calHdr" onclick="toggleSection('calBody','calHdr')">
-        Advanced: Recalibrate Rates
-        <span style="font-weight:400;opacity:.75;font-size:.8rem;margin-left:.25rem;">Override with rates from your own test run</span>
-        <span class="chevron">&#9660;</span>
-      </div>
-      <div id="calBody" class="section-body" style="display:none;">
-        <p style="font-size:.82rem;color:#4a5568;margin-bottom:1rem;">
-          If you've run your own performance test, enter the measured values below.
-          Click <strong>Recalculate rates</strong> to update the calculator with your data.
-          Leave fields blank to keep the current default.
-        </p>
-        <div class="cal-grid">
-          <div class="cal-field">
-            <label>Server cores</label>
-            <input type="number" id="calCores" min="1" max="512" placeholder="e.g. 16" />
-            <div class="hint">Total logical CPU cores on the test server</div>
-          </div>
-          <div class="cal-field">
-            <label>p99 total CPU (%)</label>
-            <input type="number" id="calP99" min="1" max="100" step="0.01" placeholder="e.g. 88.14" />
-            <div class="hint">From the server metrics chart in the report</div>
-          </div>
-          <div class="cal-field">
-            <label>Vision streams (RTSPS) — count</label>
-            <input type="number" id="calVisionCnt" min="0" max="500" placeholder="e.g. 6" />
-            <div class="hint">Number of Vision RTSPS sources in the test</div>
-          </div>
-          <div class="cal-field">
-            <label>Vision ffmpeg mean CPU (%)</label>
-            <input type="number" id="calVisionCpu" min="0" max="100" step="0.0001" placeholder="e.g. 3.425" />
-            <div class="hint">Avg % of total server CPU per Vision ffmpeg process</div>
-          </div>
-          <div class="cal-field">
-            <label>Sony/Axis streams — count</label>
-            <input type="number" id="calSonyCnt" min="0" max="500" placeholder="e.g. 4" />
-          </div>
-          <div class="cal-field">
-            <label>Sony/Axis ffmpeg mean CPU (%)</label>
-            <input type="number" id="calSonyCpu" min="0" max="100" step="0.0001" placeholder="e.g. 1.372" />
-            <div class="hint">Avg % of total server CPU per Sony/Axis ffmpeg process</div>
-          </div>
-          <div class="cal-field">
-            <label>UHD4 streams — count</label>
-            <input type="number" id="calUhd4Cnt" min="0" max="500" placeholder="e.g. 1" />
-          </div>
-          <div class="cal-field">
-            <label>UHD4 ffmpeg mean CPU (%)</label>
-            <input type="number" id="calUhd4Cpu" min="0" max="100" step="0.0001" placeholder="e.g. 0.28" />
-          </div>
-          <div class="cal-field">
-            <label>Simulated streams — count</label>
-            <input type="number" id="calSimCnt" min="0" max="500" placeholder="e.g. 24" />
-          </div>
-          <div class="cal-field">
-            <label>Simulated ffmpeg mean CPU (%)</label>
-            <input type="number" id="calSimCpu" min="0" max="100" step="0.0001" placeholder="e.g. 1.467" />
-          </div>
-        </div>
-        <button class="cal-derive-btn" onclick="deriveRates()">Recalculate rates from my data</button>
-        <div id="calDeriveResult" class="cal-derive-result"></div>
-      </div>
     </div>
 
     <!-- Calculator -->
@@ -666,6 +598,71 @@
         <!-- Network + RAM inline results -->
         <div id="netResult" style="margin-top:1.25rem;"></div>
         <div id="ramResult" style="margin-top:.75rem;"></div>
+      </div>
+    </div>
+
+    <!-- Advanced: Recalibrate Rates -->
+    <div class="card-section">
+      <div class="section-header collapsed" id="calHdr" onclick="toggleSection('calBody','calHdr')">
+        Advanced: Recalibrate Rates
+        <span style="font-weight:400;opacity:.75;font-size:.8rem;margin-left:.25rem;">Override with rates from your own test run</span>
+        <span class="chevron">&#9660;</span>
+      </div>
+      <div id="calBody" class="section-body" style="display:none;">
+        <p style="font-size:.82rem;color:#4a5568;margin-bottom:1rem;">
+          If you've run your own performance test, enter the measured values below.
+          Click <strong>Recalculate rates</strong> to update the calculator with your data.
+          Leave fields blank to keep the current default.
+        </p>
+        <div class="cal-grid">
+          <div class="cal-field">
+            <label>Server cores</label>
+            <input type="number" id="calCores" min="1" max="512" placeholder="e.g. 16" />
+            <div class="hint">Total logical CPU cores on the test server</div>
+          </div>
+          <div class="cal-field">
+            <label>p99 total CPU (%)</label>
+            <input type="number" id="calP99" min="1" max="100" step="any" placeholder="e.g. 88.14" />
+            <div class="hint">From the server metrics chart in the report</div>
+          </div>
+          <div class="cal-field">
+            <label>Vision streams (RTSPS) — count</label>
+            <input type="number" id="calVisionCnt" min="0" max="500" placeholder="e.g. 6" />
+            <div class="hint">Number of Vision RTSPS sources in the test</div>
+          </div>
+          <div class="cal-field">
+            <label>Vision ffmpeg mean CPU (%)</label>
+            <input type="number" id="calVisionCpu" min="0" max="100" step="any" placeholder="e.g. 3.425" />
+            <div class="hint">Avg % of total server CPU per Vision ffmpeg process</div>
+          </div>
+          <div class="cal-field">
+            <label>Sony/Axis streams — count</label>
+            <input type="number" id="calSonyCnt" min="0" max="500" placeholder="e.g. 4" />
+          </div>
+          <div class="cal-field">
+            <label>Sony/Axis ffmpeg mean CPU (%)</label>
+            <input type="number" id="calSonyCpu" min="0" max="100" step="any" placeholder="e.g. 1.372" />
+            <div class="hint">Avg % of total server CPU per Sony/Axis ffmpeg process</div>
+          </div>
+          <div class="cal-field">
+            <label>UHD4 streams — count</label>
+            <input type="number" id="calUhd4Cnt" min="0" max="500" placeholder="e.g. 1" />
+          </div>
+          <div class="cal-field">
+            <label>UHD4 ffmpeg mean CPU (%)</label>
+            <input type="number" id="calUhd4Cpu" min="0" max="100" step="any" placeholder="e.g. 0.28" />
+          </div>
+          <div class="cal-field">
+            <label>Simulated streams — count</label>
+            <input type="number" id="calSimCnt" min="0" max="500" placeholder="e.g. 24" />
+          </div>
+          <div class="cal-field">
+            <label>Simulated ffmpeg mean CPU (%)</label>
+            <input type="number" id="calSimCpu" min="0" max="100" step="any" placeholder="e.g. 1.467" />
+          </div>
+        </div>
+        <button class="cal-derive-btn" onclick="deriveRates()">Recalculate rates from my data</button>
+        <div id="calDeriveResult" class="cal-derive-result"></div>
       </div>
     </div>
 
@@ -899,10 +896,7 @@
       </div>
     </div>
     <div class='cap-verdict ${isOk ? "ok" : "bad"}'>
-      ${isOk
-          ? `A <strong>${CAP_CUR_CORES}-core</strong> server (reference hardware) meets this specification`
-          : `Reference ${CAP_CUR_CORES}-core server is undersized for this mix. Recommended minimum: <span class='cap-verdict-sku'>${sku} cores</span>`
-        }
+      Recommended minimum: <span class='cap-verdict-sku'>${sku} cores</span>
     </div>
     ${ghzNote}
     ${estNote}`;
